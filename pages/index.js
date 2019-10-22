@@ -1,10 +1,11 @@
-import react from 'react';
+import react, { useState } from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Container, Row, Col } from 'react-bootstrap';
 
 const columns = ['Thumbnail', 'Title', 'Description', 'Players', 'Playtime', 'MinAge', 'Select'];
 
 export default function index(props) {
+	const [selectedGames, setSelectedGames] = useState([]);
 	return (
 		<div>
 			<link
@@ -40,7 +41,13 @@ export default function index(props) {
 								</td>
 								<td>{x.minage}</td>
 								<td>
-									<input type="checkbox" />
+									<input
+										type="checkbox"
+										onChange={(e, d) => {
+											setSelectedGames(selectedGames.concat(x.gameTitle));
+											console.log(selectedGames);
+										}}
+									/>
 								</td>
 							</tr>
 						);
