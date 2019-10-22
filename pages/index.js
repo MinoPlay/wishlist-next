@@ -1,9 +1,8 @@
 import react from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Container, Row, Col } from 'react-bootstrap';
-import InsertGame from '../src/InsertGame.js';
-import GetAllGames from '../src/GetAllGames.js';
-import SearchWindow from '../src/SearchBar.js';
+
+const columns = ['Thumbnail', 'Title', 'Description', 'Players', 'Playtime', 'MinAge', 'Select'];
 
 export default function index(props) {
 	return (
@@ -14,32 +13,45 @@ export default function index(props) {
 				integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
 				crossorigin="anonymous"
 			/>
-			<Container responsive="sm">
-				{/* <Row>
-          <Col>
-            <GetAllGames games={props.games} />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InsertGame />
-          </Col>
-        </Row> */}
-				<Row>
-					<Col>
-						<SearchWindow />
-					</Col>
-				</Row>
-			</Container>
+			<table className="table table-dark">
+				<thead>
+					<tr>
+						{columns.map(x => (
+							<th scope="col" key={x}>
+								{x}
+							</th>
+						))}
+					</tr>
+				</thead>
+				<tbody>
+					{props.games.map(x => {
+						return (
+							<tr>
+								<td>
+									<img src={x.thumbnail} />
+								</td>
+								<td>{x.gameTitle}</td>
+								<td>{x.description}</td>
+								<td>
+									{x.minplayers}-{x.maxplayers}
+								</td>
+								<td>
+									{x.minplaytime}-{x.maxplaytime}
+								</td>
+								<td>{x.minage}</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
 		</div>
 	);
 }
 
-/* index.getInitialProps = async function() {
-  const response = await fetch(
-    "https://boad-games-club-api.azurewebsites.net/api/onGetAllGames?code=V3uyyQ6imbHw2hbLav2sYRVfCEMoi/6C0CeYLUqBnJIpvNRPMxpmmg=="
-  );
-  const data = await response.json();
-  return { games: data.map(entry => entry) };
+index.getInitialProps = async function() {
+	const response = await fetch(
+		'https://bgg-api.azurewebsites.net/api/GetWishlistDetailedLocalTable?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ=='
+	);
+	const data = await response.json();
+	return { games: data.map(entry => entry) };
 };
- */
