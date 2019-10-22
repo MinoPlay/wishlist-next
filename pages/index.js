@@ -39,6 +39,9 @@ export default function index(props) {
 									{x.minplaytime}-{x.maxplaytime}
 								</td>
 								<td>{x.minage}</td>
+								<td>
+									<input type="checkbox" />
+								</td>
 							</tr>
 						);
 					})}
