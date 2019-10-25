@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import fetch from 'isomorphic-unfetch';
+import ReactTextCollapse from 'react-text-collapse';
 
 const columns = ['Thumbnail', 'Title', 'Description', 'Players', 'Playtime', 'MinAge', 'Select'];
+
+const TEXT_COLLAPSE_OPTIONS = {
+	collapse: false, // default state when component rendered
+	collapseText: '... show more', // text to show when collapsed
+	expandText: 'show less', // text to show when expanded
+	minHeight: 100, // component height when closed
+	maxHeight: 250 // expanded to
+};
 
 export default function index(props) {
 	const [selectedGames, setSelectedGames] = useState([]);
@@ -13,7 +22,7 @@ export default function index(props) {
 				integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 				crossorigin="anonymous"
 			/>
-			<table className="table table-dark">
+			<table className="table table-hover table-striped table-dark table-sm">
 				<thead>
 					<tr>
 						{columns.map(x => (
@@ -32,24 +41,9 @@ export default function index(props) {
 								</td>
 								<td>{x.gameTitle}</td>
 								<td>
-									<div class="card">
-										<div class="card-header" id="b">
-											<button
-												class="btn btn-link"
-												type="button"
-												data-toggle="collapse"
-												data-target={'#' + x.gameTitle}
-												aria-expanded="true"
-												aria-controls={x.gameTitle}
-											>
-												Description
-											</button>
-										</div>
-
-										<div id={x.gameTitle} class="collapse show" aria-labelledby="b" data-parent="#accordionExample">
-											<div class="card-body">{x.description}</div>
-										</div>
-									</div>
+									<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
+										<p>{x.description}</p>
+									</ReactTextCollapse>
 								</td>
 								<td>
 									{x.minplayers}-{x.maxplayers}
