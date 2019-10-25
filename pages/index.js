@@ -52,9 +52,10 @@ export default function index(props) {
 								<td>{x.minage}</td>
 								<td>
 									<input
+										id={x.gameId}
 										type="checkbox"
 										onChange={() => {
-											setSelectedGames(selectedGames.concat(x.gameTitle));
+											setSelectedGames(selectedGames.concat(x.gameId));
 											console.log(selectedGames);
 										}}
 									/>
