@@ -41,9 +41,7 @@ export default function index(props) {
 								</td>
 								<td>{x.gameTitle}</td>
 								<td>
-									<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
-										<p>{x.description}</p>
-									</ReactTextCollapse>
+									<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>{x.description}</ReactTextCollapse>
 								</td>
 								<td>
 									{x.minplayers}-{x.maxplayers}
