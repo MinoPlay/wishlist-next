@@ -1,6 +1,10 @@
 import { useState } from "react";
 import fetch from "isomorphic-unfetch";
 import ReactTextCollapse from "react-text-collapse";
+import Header from "../components/Header";
+import LoginDialog from "../components/LoginDialog";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 
 const columns = [
   "Thumbnail",
@@ -22,74 +26,90 @@ const TEXT_COLLAPSE_OPTIONS = {
 
 export default function index(props) {
   const [selectedGames, setSelectedGames] = useState([]);
+  const [showDialog, setShowDialog] = useState(true);
+
+  function clearEverything() {
+    console.log("invoking clearEverything");
+    document
+      .querySelectorAll("input[type=checkbox]")
+      .forEach(el => (el.checked = false));
+    setSelectedGames([]);
+  }
   return (
-    <div>
-      <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossOrigin="anonymous"
-      />
+    <Provider store={store}>
       <div>
-        <button class="btn btn-block btn-success">Submit</button>
+        <link
+          rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossOrigin="anonymous"
+        />
+        <LoginDialog
+          show={showDialog ? true : false}
+          setShow={x => setShowDialog(false)}
+        />
+        <Header
+          selectedGames={selectedGames}
+          clearEverything={clearEverything}
+        />
+        <table className="table table-hover table-striped table-dark table-sm">
+          <thead>
+            <tr>
+              {columns.map(x => (
+                <th style={{ textAlign: "center" }} scope="col" key={x}>
+                  {x}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {props.games.map(x => {
+              return (
+                <tr>
+                  <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                    <input
+                      id={x.gameId}
+                      type="checkbox"
+                      onChange={() => {
+                        if (selectedGames.includes(x.gameId)) {
+                          selectedGames.splice(
+                            selectedGames.indexOf(x.gameId),
+                            1
+                          );
+                          setSelectedGames(selectedGames);
+                          console.log("removed element:" + x.gameId);
+                        } else {
+                          console.log("adding element:" + x.gameId);
+                          selectedGames.push(x.gameId);
+                          setSelectedGames(selectedGames);
+                          console.log(selectedGames);
+                        }
+                      }}
+                    />
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <img src={x.thumbnail} />
+                  </td>
+                  <td>{x.gameTitle}</td>
+                  <td>
+                    <ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
+                      {x.description}
+                    </ReactTextCollapse>
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {x.minplayers}-{x.maxplayers}
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    {x.minplaytime}-{x.maxplaytime}
+                  </td>
+                  <td style={{ textAlign: "center" }}>{x.minage}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-      <table className="table table-hover table-striped table-dark table-sm">
-        <thead>
-          <tr>
-            {columns.map(x => (
-              <th style={{ textAlign: "center" }} scope="col" key={x}>
-                {x}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {props.games.map(x => {
-            return (
-              <tr>
-                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
-                  <input
-                    id={x.gameId}
-                    type="checkbox"
-                    onChange={() => {
-                      if (selectedGames.includes(x.gameId)) {
-                        selectedGames.splice(
-                          selectedGames.indexOf(x.gameId),
-                          1
-                        );
-                        setSelectedGames(selectedGames);
-                        console.log("removed element:" + x.gameId);
-                      } else {
-                        console.log("adding element:" + x.gameId);
-                        selectedGames.push(x.gameId);
-                        setSelectedGames(selectedGames);
-                        console.log(selectedGames);
-                      }
-                    }}
-                  />
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  <img src={x.thumbnail} />
-                </td>
-                <td>{x.gameTitle}</td>
-                <td>
-                  <ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
-                    {x.description}
-                  </ReactTextCollapse>
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {x.minplayers}-{x.maxplayers}
-                </td>
-                <td style={{ textAlign: "center" }}>
-                  {x.minplaytime}-{x.maxplaytime}
-                </td>
-                <td style={{ textAlign: "center" }}>{x.minage}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    </Provider>
   );
 }
 
