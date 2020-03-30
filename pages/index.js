@@ -27,6 +27,7 @@ const TEXT_COLLAPSE_OPTIONS = {
 export default function index(props) {
   const [selectedGames, setSelectedGames] = useState([]);
   const [showDialog, setShowDialog] = useState(true);
+  const [loginId, setLoginId] = useState("");
 
   function clearEverything() {
     console.log("invoking clearEverything");
@@ -35,6 +36,7 @@ export default function index(props) {
       .forEach(el => (el.checked = false));
     setSelectedGames([]);
   }
+
   return (
     <Provider store={store}>
       <div>
@@ -46,11 +48,13 @@ export default function index(props) {
         />
         <LoginDialog
           show={showDialog ? true : false}
-          setShow={x => setShowDialog(false)}
+          setShow={() => setShowDialog(false)}
+          setLoginId={x => setLoginId(x)}
         />
         <Header
           selectedGames={selectedGames}
           clearEverything={clearEverything}
+          loginId={loginId}
         />
         <table className="table table-hover table-striped table-dark table-sm">
           <thead>

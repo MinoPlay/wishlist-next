@@ -18,33 +18,42 @@ function LoginDialog(props) {
   //   console.log("show end: " + show);
   // }
 
+  const [loginId, setLoginId] = useState("");
+
+  const onClickLogin = () => {
+    console.log("inside onClickLogin");
+    props.setLoginId(loginId);
+    props.setShow();
+  };
+
   return (
     <>
-      <Modal show={props.show} onHide={props.setShow}>
+      <Modal
+        show={props.show}
+        onHide={() => alert("OH NO YOU DIDN'T!!!!")}
+        centered
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Login dialog</Modal.Title>
+          <Modal.Title>Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="formBasicId">
-              <Form.Label>Id</Form.Label>
+              <Form.Label>Who are you? Enter your initials</Form.Label>
               <Form.Control
                 type="id"
-                placeholder="Enter id"
-                //onChange={e => setCurrentId(e.target.value)}
+                placeholder="initials"
+                onChange={e => setLoginId(e.target.value)}
               />
-            </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={props.setShow}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={props.setShow}>
+          <Button
+            variant="primary"
+            onClick={x => onClickLogin()}
+            disabled={loginId === "" ? "disabled" : ""}
+          >
             Login
           </Button>
         </Modal.Footer>
@@ -53,10 +62,11 @@ function LoginDialog(props) {
   );
 }
 
-LoginDialog.propTypes = {
-  setShow: PropTypes.func,
-  show: PropTypes.bool
-};
+// LoginDialog.propTypes = {
+//   setShow: PropTypes.func,
+//   show: PropTypes.bool,
+//   setLoginId: PropTypes.func
+// };
 
 // const mapStateToProps = state => {
 //   return { loginId: state.loginReducer };

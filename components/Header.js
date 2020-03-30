@@ -38,6 +38,7 @@ function Header(props) {
         setShow={x => setShow(false)}
         selectedGames={props.selectedGames}
         onSubmitDialog={x => onSubmitDialog()}
+        loginId={props.loginId}
       />
       <LoginDialog
         show={showLogin ? true : false}

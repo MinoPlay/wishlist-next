@@ -2,15 +2,24 @@ import PropTypes from "prop-types";
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import fetch from "isomorphic-unfetch";
 
-// async function submitWishlistSelection() {
-//   const response = await fetch(
-//     "http://localhost:7071/api/AddWishlistSelection?UserId=BOB&GameSelections=selec1,selec2,selec3"
-//   );
+async function submitWishlistSelection(userName, selectedGames) {
+  var buildUrl = "http://localhost:7071/api/AddWishlistSelection?";
+  var userSelection = "UserId=" + userName;
+  var gamesSelection = "&GameSelections=" + selectedGames.join(",");
+  var combinedUrl = buildUrl + userSelection + gamesSelection;
+  console.log(combinedUrl);
+  const response = fetch(new Request(combinedUrl), { mode: "no-cors" });
+  console.log(response);
+}
 
 function SubmitDialog(props) {
   const onClickSubmit = () => {
     console.log("enter onClickSubmit");
+    console.log("props.loginId:   " + props.loginId);
+    console.log("props.selection: " + props.selectedGames);
+    submitWishlistSelection(props.loginId, props.selectedGames);
     props.onSubmitDialog();
   };
 
