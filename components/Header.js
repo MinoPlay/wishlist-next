@@ -3,27 +3,32 @@ import React from "react";
 import { useState } from "react";
 import { Navbar, Nav, Form, FormControl, Button } from "react-bootstrap";
 import SubmitDialog from "./SubmitDialog";
-import LoginDialog from "./LoginDialog";
+import SuccessSubmit from "./SuccessSubmit";
 
 function Header(props) {
   const [show, setShow] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const onSubmitDialog = () => {
     console.log("list: " + props.selectedGames);
     props.clearEverything();
     console.log("clearred? : " + props.selectedGames);
     setShow(false);
+    setShowSuccess(true);
   };
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">
         <Navbar.Brand href="#home">Oticon Board Games Club</Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link onClick={e => setShowLogin(true)}>Login</Nav.Link>
-          <Nav.Link onClick={e => setShow(true)}>Submit</Nav.Link>
+          <Button variant="outline-success" onClick={() => setShow(true)}>
+            Submit
+          </Button>
         </Nav>
-        <Form inline>
+        <Navbar.Text>
+          {props.loginId !== "" ? "Logged in as: " + props.loginId : ""}
+        </Navbar.Text>
+        {/* <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <Button
             variant="outline-success"
@@ -31,18 +36,19 @@ function Header(props) {
           >
             Search
           </Button>
-        </Form>
+        </Form> */}
       </Navbar>
       <SubmitDialog
         show={show ? true : false}
-        setShow={x => setShow(false)}
+        setShow={() => setShow(false)}
         selectedGames={props.selectedGames}
+        selectedGamesNames={props.selectedGamesNames}
         onSubmitDialog={x => onSubmitDialog()}
         loginId={props.loginId}
       />
-      <LoginDialog
-        show={showLogin ? true : false}
-        setShow={x => setShowLogin(false)}
+      <SuccessSubmit
+        showSuccess={showSuccess ? true : false}
+        setShowSuccess={() => setShowSuccess(false)}
       />
     </div>
   );
@@ -50,7 +56,9 @@ function Header(props) {
 
 Header.propTypes = {
   selectedGames: PropTypes.array,
-  clearEverything: PropTypes.func
+  selectedGamesNames: PropTypes.array,
+  clearEverything: PropTypes.func,
+  loginId: PropTypes.string
 };
 
 export default Header;

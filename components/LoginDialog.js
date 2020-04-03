@@ -44,6 +44,13 @@ function LoginDialog(props) {
                 type="id"
                 placeholder="initials"
                 onChange={e => setLoginId(e.target.value)}
+                onKeyPress={e => {
+                  if (event.charCode == 13) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onClickLogin();
+                  }
+                }}
               />
             </Form.Group>
           </Form>

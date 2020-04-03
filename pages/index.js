@@ -7,13 +7,13 @@ import { Provider } from "react-redux";
 import store from "../redux/store";
 
 const columns = [
-  "Thumbnail",
+  "Select",
+  "",
   "Title",
   "Description",
   "Players",
   "Playtime",
-  "MinAge",
-  "Select"
+  "MinAge"
 ];
 
 const TEXT_COLLAPSE_OPTIONS = {
@@ -26,8 +26,9 @@ const TEXT_COLLAPSE_OPTIONS = {
 
 export default function index(props) {
   const [selectedGames, setSelectedGames] = useState([]);
+  const [selectedGamesNames, setSelectedGamesNames] = useState([]);
   const [showDialog, setShowDialog] = useState(true);
-  const [loginId, setLoginId] = useState("");
+  const [loginId, setLoginId] = useState("unknown");
 
   function clearEverything() {
     console.log("invoking clearEverything");
@@ -35,6 +36,7 @@ export default function index(props) {
       .querySelectorAll("input[type=checkbox]")
       .forEach(el => (el.checked = false));
     setSelectedGames([]);
+    setSelectedGamesNames([]);
   }
 
   return (
@@ -53,6 +55,7 @@ export default function index(props) {
         />
         <Header
           selectedGames={selectedGames}
+          selectedGamesNames={selectedGamesNames}
           clearEverything={clearEverything}
           loginId={loginId}
         />
@@ -80,13 +83,20 @@ export default function index(props) {
                             selectedGames.indexOf(x.gameId),
                             1
                           );
+                          selectedGamesNames.splice(
+                            selectedGamesNames.indexOf(x.gameTitle),
+                            1
+                          );
+
                           setSelectedGames(selectedGames);
-                          console.log("removed element:" + x.gameId);
+                          setSelectedGamesNames(selectedGamesNames);
                         } else {
-                          console.log("adding element:" + x.gameId);
                           selectedGames.push(x.gameId);
+                          selectedGamesNames.push(x.gameTitle);
                           setSelectedGames(selectedGames);
+                          setSelectedGamesNames(selectedGamesNames);
                           console.log(selectedGames);
+                          console.log(selectedGamesNames);
                         }
                       }}
                     />
@@ -118,10 +128,12 @@ export default function index(props) {
 }
 
 index.getInitialProps = async function() {
+  // const response = await fetch(
+  //   "http://localhost:7071/api/GetWishlistDetailedLocalTable"
+  // );
   const response = await fetch(
-    "http://localhost:7071/api/GetWishlistDetailedLocalTable"
+    "https://bgg-api.azurewebsites.net/api/GetWishlistDetailedLocalTable?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ=="
   );
-  //const response = await fetch('https://bgg-api.azurewebsites.net/api/GetWishlistDetailedLocalTable?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ==');
   const data = await response.json();
   return { games: data.map(entry => entry) };
 };

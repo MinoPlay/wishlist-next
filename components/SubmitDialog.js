@@ -5,7 +5,9 @@ import Button from "react-bootstrap/Button";
 import fetch from "isomorphic-unfetch";
 
 async function submitWishlistSelection(userName, selectedGames) {
-  var buildUrl = "http://localhost:7071/api/AddWishlistSelection?";
+  var buildUrl =
+    "https://bgg-api.azurewebsites.net/api/AddWishlistSelection?code=EZ0cxdMhUvuXav1fgaSFmqxCxaQ8hSlRFWo4RCOyFU3Q95v2pLMJVQ==&";
+  //var buildUrl = "http://localhost:7071/api/AddWishlistSelection?";
   var userSelection = "UserId=" + userName;
   var gamesSelection = "&GameSelections=" + selectedGames.join(",");
   var combinedUrl = buildUrl + userSelection + gamesSelection;
@@ -30,7 +32,7 @@ function SubmitDialog(props) {
           <Modal.Title>Submit selection?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          You're about to submit ({props.selectedGames.join(",")}) games!
+          You're about to submit ({props.selectedGamesNames.join(", ")}) games!
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={props.setShow}>
@@ -49,6 +51,7 @@ SubmitDialog.propTypes = {
   setShow: PropTypes.func,
   show: PropTypes.bool,
   selectedGames: PropTypes.array,
+  selectedGamesNames: PropTypes.array,
   onSubmitDialog: PropTypes.func
 };
 
