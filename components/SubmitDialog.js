@@ -5,9 +5,9 @@ import Button from "react-bootstrap/Button";
 import fetch from "isomorphic-unfetch";
 
 async function submitWishlistSelection(userName, selectedGames) {
-  var buildUrl =
-    "https://bgg-api.azurewebsites.net/api/AddWishlistSelection?code=EZ0cxdMhUvuXav1fgaSFmqxCxaQ8hSlRFWo4RCOyFU3Q95v2pLMJVQ==&";
-  //var buildUrl = "http://localhost:7071/api/AddWishlistSelection?";
+  // var buildUrl =
+  //   "https://bgg-api.azurewebsites.net/api/AddWishlistSelection?code=EZ0cxdMhUvuXav1fgaSFmqxCxaQ8hSlRFWo4RCOyFU3Q95v2pLMJVQ==&";
+  var buildUrl = "http://localhost:7071/api/AddWishlistSelection?";
   var userSelection = "UserId=" + userName;
   var gamesSelection = "&GameSelections=" + selectedGames.join(",");
   var combinedUrl = buildUrl + userSelection + gamesSelection;

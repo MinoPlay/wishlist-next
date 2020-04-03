@@ -128,12 +128,12 @@ export default function index(props) {
 }
 
 index.getInitialProps = async function() {
-  // const response = await fetch(
-  //   "http://localhost:7071/api/GetWishlistDetailedLocalTable"
-  // );
   const response = await fetch(
-    "https://bgg-api.azurewebsites.net/api/GetWishlistDetailedLocalTable?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ=="
+    "http://localhost:7071/api/GetWishlistDetailedLocalTable"
   );
+  // const response = await fetch(
+  //   "https://bgg-api.azurewebsites.net/api/GetWishlistDetailedLocalTable?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ=="
+  // );
   const data = await response.json();
   return { games: data.map(entry => entry) };
 };
