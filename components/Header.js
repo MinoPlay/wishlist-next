@@ -43,7 +43,7 @@ function Header(props) {
         setShow={() => setShow(false)}
         selectedGames={props.selectedGames}
         selectedGamesNames={props.selectedGamesNames}
-        onSubmitDialog={x => onSubmitDialog()}
+        onSubmitDialog={() => onSubmitDialog()}
         loginId={props.loginId}
       />
       <SuccessSubmit

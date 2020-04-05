@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import LoginDialog from "../components/LoginDialog";
 import { Provider } from "react-redux";
 import store from "../redux/store";
+import WeightDropdown from "../components/WeightDropdown";
 
 const columns = [
   "Select",
@@ -27,16 +28,41 @@ const TEXT_COLLAPSE_OPTIONS = {
 export default function index(props) {
   const [selectedGames, setSelectedGames] = useState([]);
   const [selectedGamesNames, setSelectedGamesNames] = useState([]);
-  const [showDialog, setShowDialog] = useState(true);
+  const [showSubmitDialog, setShowSubmitDialog] = useState(true);
   const [loginId, setLoginId] = useState("unknown");
 
+  //control the available selection for weight dropdowns
+  const [availableDropdowns, setAvailableDropdowns] = useState([5, 3, 2, 1, 0]);
+
   function clearEverything() {
-    console.log("invoking clearEverything");
-    document
-      .querySelectorAll("input[type=checkbox]")
-      .forEach(el => (el.checked = false));
-    setSelectedGames([]);
-    setSelectedGamesNames([]);
+    console.log(
+      "invoking clearEverything (for now do nothing, need to implement"
+    );
+    // document
+    //   .querySelectorAll("input[type=checkbox]")
+    //   .forEach(el => (el.checked = false));
+    // setSelectedGames([]);
+    // setSelectedGamesNames([]);
+  }
+
+  function onSelectSelection(x) {
+    console.log("enter onSelectSelection");
+    if (selectedGames.includes(x.gameId)) {
+      selectedGames.splice(selectedGames.indexOf(x.gameId), 1);
+      selectedGamesNames.splice(selectedGamesNames.indexOf(x.gameTitle), 1);
+
+      setSelectedGames(selectedGames);
+      setSelectedGamesNames(selectedGamesNames);
+      console.log(selectedGames);
+      console.log(selectedGamesNames);
+    } else {
+      selectedGames.push(x.gameId);
+      selectedGamesNames.push(x.gameTitle);
+      setSelectedGames(selectedGames);
+      setSelectedGamesNames(selectedGamesNames);
+      console.log(selectedGames);
+      console.log(selectedGamesNames);
+    }
   }
 
   return (
@@ -49,8 +75,8 @@ export default function index(props) {
           crossOrigin="anonymous"
         />
         <LoginDialog
-          show={showDialog ? true : false}
-          setShow={() => setShowDialog(false)}
+          show={showSubmitDialog ? true : false}
+          setShow={() => setShowSubmitDialog(false)}
           setLoginId={x => setLoginId(x)}
         />
         <Header
@@ -74,31 +100,15 @@ export default function index(props) {
               return (
                 <tr>
                   <td style={{ textAlign: "center", verticalAlign: "middle" }}>
-                    <input
+                    {/* <input
                       id={x.gameId}
                       type="checkbox"
-                      onChange={() => {
-                        if (selectedGames.includes(x.gameId)) {
-                          selectedGames.splice(
-                            selectedGames.indexOf(x.gameId),
-                            1
-                          );
-                          selectedGamesNames.splice(
-                            selectedGamesNames.indexOf(x.gameTitle),
-                            1
-                          );
-
-                          setSelectedGames(selectedGames);
-                          setSelectedGamesNames(selectedGamesNames);
-                        } else {
-                          selectedGames.push(x.gameId);
-                          selectedGamesNames.push(x.gameTitle);
-                          setSelectedGames(selectedGames);
-                          setSelectedGamesNames(selectedGamesNames);
-                          console.log(selectedGames);
-                          console.log(selectedGamesNames);
-                        }
-                      }}
+                      }
+                    /> */}
+                    <WeightDropdown
+                      availableDropdowns={availableDropdowns}
+                      setAvailableDropdowns={setAvailableDropdowns}
+                      onSelectSelection={() => onSelectSelection(x)}
                     />
                   </td>
                   <td style={{ textAlign: "center" }}>
