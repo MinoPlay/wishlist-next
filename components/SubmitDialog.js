@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
-import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import fetch from 'isomorphic-unfetch';
 
-async function submitWishlistSelection(userName, gameSelections) {
+async function submitWishlistSelection(userName, gameSelections, resubmitSelection) {
+	console.log('enter submitWishlistSelection');
+	if (resubmitSelection) {
+		// delete preexisting entries:
+		fetch(`http://localhost:7071/api/DeleteMemberWishlist?initials=${userName}`);
+		console.log('done deleting entries');
+	}
+
+	console.log('PAST resubmit check');
 	// var buildUrl =
 	//   `https://bgg-api.azurewebsites.net/api/AddWishlistSelection?code=EZ0cxdMhUvuXav1fgaSFmqxCxaQ8hSlRFWo4RCOyFU3Q95v2pLMJVQ==&UserId=${userName}`;
 	var buildUrl = `http://localhost:7071/api/AddWishlistSelection?UserId=${userName}`;
@@ -16,6 +22,7 @@ async function submitWishlistSelection(userName, gameSelections) {
 		const response = fetch(combinedUrl);
 		console.log(response);
 	}
+	console.log('done submitWishlistSelection!!!');
 }
 
 function SubmitDialog(props) {
@@ -23,7 +30,8 @@ function SubmitDialog(props) {
 		console.log('enter onClickSubmit');
 		console.log('props.loginId:   ' + props.loginId);
 		console.log('props.gameSelections: ' + props.gameSelections);
-		submitWishlistSelection(props.loginId, props.gameSelections);
+
+		submitWishlistSelection(props.loginId, props.gameSelections, props.resubmitSelection);
 		props.onSubmitDialog();
 	};
 
@@ -49,12 +57,5 @@ function SubmitDialog(props) {
 		</div>
 	);
 }
-
-SubmitDialog.propTypes = {
-	setShow: PropTypes.func,
-	show: PropTypes.bool,
-	gameSelections: PropTypes.array,
-	onSubmitDialog: PropTypes.func
-};
 
 export default SubmitDialog;

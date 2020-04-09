@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import ReactTextCollapse from 'react-text-collapse';
 import Header from '../components/Header';
@@ -78,11 +79,11 @@ export default function index(props) {
 				integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 				crossOrigin="anonymous"
 			/>
-			{/* <LoginDialog
+			<LoginDialog
 				show={showSubmitDialog ? true : false}
 				setShow={() => setShowSubmitDialog(false)}
 				setLoginId={(x) => setLoginId(x)}
-			/> */}
+			/>
 			<Header gameSelections={gameSelections} clearEverything={clearEverything} loginId={loginId} />
 			<table className="table table-hover table-striped table-dark table-sm">
 				<thead>

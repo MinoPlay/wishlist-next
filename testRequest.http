@@ -9,3 +9,7 @@ GET http://localhost:7071/api/AddMember?initials=MKUC
 GET http://localhost:7071/api/GetAllMembers
 ###
 GET https://bgg-api.azurewebsites.net/api/GetWishlist?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ==
+### Test wishlist selection exists
+GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
+### Get all wishlists
+GET http://localhost:7071/api/GetWishlistSelections

@@ -9,9 +9,9 @@ async function ValidateLoginId(loginId) {
 	console.log(`Validating login ID ${loginId}`);
 	const result = await fetch(`http://localhost:7071/api/GetMember?initials=${loginId}`);
 	console.log(result);
-	const isOk = result.status;
+	const status = result.status;
 
-	return isOk;
+	return status;
 }
 
 function LoginDialog(props) {

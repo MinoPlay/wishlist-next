@@ -1,13 +1,23 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, Form, FormControl, Button } from 'react-bootstrap';
 import SubmitDialog from './SubmitDialog';
 import SuccessSubmit from './SuccessSubmit';
+import ReSubmitDialog from './ReSubmitDialog';
+import fetch from 'isomorphic-unfetch';
+
+async function CheckWishlistAlreadySubmitted(userName) {
+	var buildUrl = `http://localhost:7071/api/WishlistSelectionExists?initials=${userName}`;
+	const response = fetch(buildUrl);
+
+	return await response;
+}
 
 function Header(props) {
 	const [ show, setShow ] = useState(false);
 	const [ showSuccess, setShowSuccess ] = useState(false);
+	const [ showResubmitDialog, setShowResubmitDialog ] = useState(false);
+	const [ resubmitSelection, setShowResubmitSelection ] = useState(false);
 
 	const onSubmitDialog = () => {
 		console.log('list: ' + props.gameSelections);
@@ -15,12 +25,32 @@ function Header(props) {
 		setShow(false);
 		setShowSuccess(true);
 	};
+
+	const onResubmitDialog = () => {
+		console.log('onResubmitDialog');
+		CheckWishlistAlreadySubmitted(props.loginId).then((x) => {
+			if (x.status == 200) {
+				console.log('status: 200');
+				setShowResubmitDialog(true);
+			} else {
+				console.log('status not 200');
+				setShow(true);
+			}
+		});
+	};
+
+	const onDoResubmit = () => {
+		setShowResubmitDialog(false);
+		setShow(true);
+		setShowResubmitSelection(true);
+	};
+
 	return (
 		<div>
 			<Navbar bg="dark" variant="dark" expand="lg">
 				<Navbar.Brand href="#home">Oticon Board Games Club</Navbar.Brand>
 				<Nav className="mr-auto">
-					<Button variant="outline-success" onClick={() => setShow(true)}>
+					<Button variant="outline-success" onClick={() => onResubmitDialog()}>
 						Submit
 					</Button>
 				</Nav>
@@ -35,22 +65,22 @@ function Header(props) {
           </Button>
         </Form> */}
 			</Navbar>
+			<ReSubmitDialog
+				show={showResubmitDialog}
+				setShow={() => setShowResubmitDialog(false)}
+				resubmitSelection={() => onDoResubmit()}
+			/>
 			<SubmitDialog
-				show={show ? true : false}
+				show={show}
 				setShow={() => setShow(false)}
 				gameSelections={props.gameSelections}
 				onSubmitDialog={() => onSubmitDialog()}
 				loginId={props.loginId}
+				resubmitSelection={resubmitSelection}
 			/>
-			<SuccessSubmit showSuccess={showSuccess ? true : false} setShowSuccess={() => setShowSuccess(false)} />
+			<SuccessSubmit showSuccess={showSuccess} setShowSuccess={() => setShowSuccess(false)} />
 		</div>
 	);
 }
-
-Header.propTypes = {
-	gameSelections: PropTypes.array,
-	clearEverything: PropTypes.func,
-	loginId: PropTypes.string
-};
 
 export default Header;
