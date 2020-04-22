@@ -16,32 +16,36 @@ async function ValidateLoginId(loginId) {
 	return status;
 }
 
-function LoginDialog(props) {
+function AddMember(props) {
 	const [ loginId, setLoginId ] = useState('');
 
 	const onClickLogin = () => {
 		console.log('onClickLogin handler');
 
 		ValidateLoginId(loginId).then((x) => {
-			if (x == 200) {
-				props.setLoginId(loginId);
-				props.setShow();
+			if (x != 200) {
+				setLoginId(loginId);
+				// add new member
+				fetch(`http://localhost:7071/api/AddMember?initials=${loginId}`);
+				props.success(true);
+				props.successMessage(`Successfully added new member '${loginId}'`);
+				props.setShow(false);
 			} else {
-				alert(`${loginId} is not a valid id.`);
+				alert(`${loginId} is already added.`);
 			}
 		});
 	};
 
 	return (
 		<div>
-			<Modal show={props.show} onHide={() => alert("OH NO YOU DIDN'T!!!!")} centered>
+			<Modal show={props.show} onHide={() => props.setShow(false)} centered>
 				<Modal.Header closeButton>
-					<Modal.Title>Login</Modal.Title>
+					<Modal.Title>Add new member</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
 						<Form.Group controlId="formBasicId">
-							<Form.Label>Who are you? Enter your initials</Form.Label>
+							<Form.Label>Enter new member initials</Form.Label>
 							<Form.Control
 								type="id"
 								placeholder="initials"
@@ -63,7 +67,7 @@ function LoginDialog(props) {
 						onClick={(x) => onClickLogin()}
 						disabled={loginId === '' ? 'disabled' : ''}
 					>
-						Login
+						Add
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -71,4 +75,4 @@ function LoginDialog(props) {
 	);
 }
 
-export default LoginDialog;
+export default AddMember;

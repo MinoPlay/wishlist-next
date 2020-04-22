@@ -4,8 +4,6 @@ GET http://localhost:7071/api/GetMember?initials=MKUC
 ### missing user
 GET http://localhost:7071/api/GetMember?initials=AAAAA
 ###
-GET http://localhost:7071/api/AddMember?initials=MKUC
-###
 GET http://localhost:7071/api/GetAllMembers
 ###
 GET https://bgg-api.azurewebsites.net/api/GetWishlist?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ==
@@ -13,3 +11,21 @@ GET https://bgg-api.azurewebsites.net/api/GetWishlist?code=4GcBaUuR/mQWefy9Lu9DB
 GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
 ### Get all wishlists
 GET http://localhost:7071/api/GetWishlistSelections
+###
+GET http://localhost:7071/api/SyncWishlistAgainstBGG
+###
+### ADD
+###
+GET http://localhost:7071/api/AddMember?initials=MKUC
+###
+GET http://localhost:7071/api/AddGame
+###
+GET http://localhost:7071/api/GetGame?gameId=421
+###
+### DELETE
+###
+GET http://localhost:7071/api/DeleteGame
+###
+GET http://localhost:7071/api/DeleteMember
+###
+GET http://localhost:7071/api/DeleteMemberWishlist

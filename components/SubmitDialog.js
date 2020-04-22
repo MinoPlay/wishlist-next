@@ -7,6 +7,7 @@ async function submitWishlistSelection(userName, gameSelections, resubmitSelecti
 	if (resubmitSelection) {
 		// delete preexisting entries:
 		fetch(`http://localhost:7071/api/DeleteMemberWishlist?initials=${userName}`);
+		// fetch(`https://bgg-api.azurewebsites.net/api/DeleteMemberWishlist?initials=${userName}`);
 		console.log('done deleting entries');
 	}
 
@@ -14,6 +15,7 @@ async function submitWishlistSelection(userName, gameSelections, resubmitSelecti
 	// var buildUrl =
 	//   `https://bgg-api.azurewebsites.net/api/AddWishlistSelection?code=EZ0cxdMhUvuXav1fgaSFmqxCxaQ8hSlRFWo4RCOyFU3Q95v2pLMJVQ==&UserId=${userName}`;
 	var buildUrl = `http://localhost:7071/api/AddWishlistSelection?UserId=${userName}`;
+	// var buildUrl = `https://bgg-api.azurewebsites.net/api/AddWishlistSelection?UserId=${userName}`;
 
 	for (var i = 0; i < gameSelections.length; i++) {
 		var combinedUrl = `${buildUrl}&GameSelection=${gameSelections[i].gameId}&GameWeight=${gameSelections[i]

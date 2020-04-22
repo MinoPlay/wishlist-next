@@ -16,7 +16,7 @@ async function ValidateLoginId(loginId) {
 	return status;
 }
 
-function LoginDialog(props) {
+function DeleteMember(props) {
 	const [ loginId, setLoginId ] = useState('');
 
 	const onClickLogin = () => {
@@ -24,24 +24,28 @@ function LoginDialog(props) {
 
 		ValidateLoginId(loginId).then((x) => {
 			if (x == 200) {
-				props.setLoginId(loginId);
-				props.setShow();
+				setLoginId(loginId);
+				// add new member
+				fetch(`http://localhost:7071/api/DeleteMember?initials=${loginId}`);
+				props.success(true);
+				props.successMessage(`Successfully deleted member '${loginId}'`);
+				props.setShow(false);
 			} else {
-				alert(`${loginId} is not a valid id.`);
+				alert(`${loginId} doesn't exists.`);
 			}
 		});
 	};
 
 	return (
 		<div>
-			<Modal show={props.show} onHide={() => alert("OH NO YOU DIDN'T!!!!")} centered>
+			<Modal show={props.show} onHide={() => props.setShow(false)} centered>
 				<Modal.Header closeButton>
-					<Modal.Title>Login</Modal.Title>
+					<Modal.Title>Delete member</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
 						<Form.Group controlId="formBasicId">
-							<Form.Label>Who are you? Enter your initials</Form.Label>
+							<Form.Label>Enter member initials</Form.Label>
 							<Form.Control
 								type="id"
 								placeholder="initials"
@@ -63,7 +67,7 @@ function LoginDialog(props) {
 						onClick={(x) => onClickLogin()}
 						disabled={loginId === '' ? 'disabled' : ''}
 					>
-						Login
+						Delete
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -71,4 +75,4 @@ function LoginDialog(props) {
 	);
 }
 
-export default LoginDialog;
+export default DeleteMember;

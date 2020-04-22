@@ -5,10 +5,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 
-async function ValidateLoginId(loginId) {
-	console.log(`Validating login ID ${loginId}`);
+async function ValidateGameExists(gameId) {
+	console.log(`Validating login ID ${gameId}`);
 	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetMember?initials=${loginId}`;
-	var buildUrl = `http://localhost:7071/api/GetMember?initials=${loginId}`;
+	var buildUrl = `http://localhost:7071/api/GetGame?gameId=${gameId}`;
 	const result = await fetch(buildUrl);
 	console.log(result);
 	const status = result.status;
@@ -16,36 +16,40 @@ async function ValidateLoginId(loginId) {
 	return status;
 }
 
-function LoginDialog(props) {
-	const [ loginId, setLoginId ] = useState('');
+function DeleteWishlistEntry(props) {
+	const [ gameId, setGameId ] = useState('');
 
 	const onClickLogin = () => {
 		console.log('onClickLogin handler');
 
-		ValidateLoginId(loginId).then((x) => {
-			if (x == 200) {
-				props.setLoginId(loginId);
-				props.setShow();
+		ValidateGameExists(gameId).then((x) => {
+			if (x != 200) {
+				setGameId(gameId);
+				// add new member
+				fetch(`http://localhost:7071/api/DeleteGame?gameId=${gameId}`);
+				props.success(true);
+				props.successMessage(`Successfully deleted game from the wishlist '${gameId}'`);
+				props.setShow(false);
 			} else {
-				alert(`${loginId} is not a valid id.`);
+				alert(`${gameId} is not present.`);
 			}
 		});
 	};
 
 	return (
 		<div>
-			<Modal show={props.show} onHide={() => alert("OH NO YOU DIDN'T!!!!")} centered>
+			<Modal show={props.show} onHide={() => props.setShow(false)} centered>
 				<Modal.Header closeButton>
-					<Modal.Title>Login</Modal.Title>
+					<Modal.Title>Delete game</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
 						<Form.Group controlId="formBasicId">
-							<Form.Label>Who are you? Enter your initials</Form.Label>
+							<Form.Label>Enter game id</Form.Label>
 							<Form.Control
 								type="id"
-								placeholder="initials"
-								onChange={(e) => setLoginId(e.target.value)}
+								placeholder="game id"
+								onChange={(e) => setGameId(e.target.value)}
 								onKeyPress={(e) => {
 									if (event.charCode == 13) {
 										e.preventDefault();
@@ -61,9 +65,9 @@ function LoginDialog(props) {
 					<Button
 						variant="primary"
 						onClick={(x) => onClickLogin()}
-						disabled={loginId === '' ? 'disabled' : ''}
+						disabled={gameId === '' ? 'disabled' : ''}
 					>
-						Login
+						Add
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -71,4 +75,4 @@ function LoginDialog(props) {
 	);
 }
 
-export default LoginDialog;
+export default DeleteWishlistEntry;

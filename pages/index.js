@@ -135,9 +135,7 @@ export default function index(props) {
 
 index.getInitialProps = async function() {
 	const response = await fetch('http://localhost:7071/api/GetWishlist');
-	// const response = await fetch(
-	//   "https://bgg-api.azurewebsites.net/api/GetWishlist?code=4GcBaUuR/mQWefy9Lu9DBN2kLZ2Al2Ju4sasuwNho7aqWe3zchW5KQ=="
-	// );
+	// const response = await fetch('https://bgg-api.azurewebsites.net/api/GetWishlist');
 	const data = await response.json();
 	return { games: data.map((entry) => entry) };
 };

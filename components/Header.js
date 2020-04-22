@@ -7,6 +7,7 @@ import ReSubmitDialog from './ReSubmitDialog';
 import fetch from 'isomorphic-unfetch';
 
 async function CheckWishlistAlreadySubmitted(userName) {
+	// var buildUrl = `https://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=${userName}`;
 	var buildUrl = `http://localhost:7071/api/WishlistSelectionExists?initials=${userName}`;
 	const response = fetch(buildUrl);
 
@@ -78,7 +79,11 @@ function Header(props) {
 				loginId={props.loginId}
 				resubmitSelection={resubmitSelection}
 			/>
-			<SuccessSubmit showSuccess={showSuccess} setShowSuccess={() => setShowSuccess(false)} />
+			<SuccessSubmit
+				showSuccess={showSuccess}
+				setShowSuccess={() => setShowSuccess(false)}
+				message="Wishlist selection submitted!"
+			/>
 		</div>
 	);
 }
