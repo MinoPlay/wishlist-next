@@ -1,7 +1,8 @@
 module.exports = {
 	exportPathMap: function() {
 		return {
-			'/': { page: '/' }
+			'/': { page: '/' },
+			'/adminWindow': { page: '/adminWindow' }
 		};
 	}
 };

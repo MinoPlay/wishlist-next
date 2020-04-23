@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
+import LoginDialog from '../components/LoginDialog';
 import AddMember from '../components/adminView/Members/AddMember';
 import DeleteMember from '../components/adminView/Members/DeleteMember';
 import GetAllMembers from '../components/adminView/Members/GetAllMembers';
@@ -12,10 +13,13 @@ import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameI
 import SuccessSubmit from '../components/SuccessSubmit';
 
 function adminWindow() {
+	const [ showSubmitDialog, setShowSubmitDialog ] = useState(true);
+	const [ loginId, setLoginId ] = useState('');
+
 	const [ showAddMember, setShowAddMember ] = useState(false);
 	const [ showDeleteMember, setShowDeleteMember ] = useState(false);
-	const [ showAllMembers, setShowAllMembers ] = useState(true);
-	const [ showAllMembersRefresh, setShowAllMembersRefresh ] = useState(true);
+	const [ showAllMembers, setShowAllMembers ] = useState(false);
+	const [ showAllMembersRefresh, setShowAllMembersRefresh ] = useState(false);
 
 	const [ showAddWishlistEntry, setShowAddWishlistEntry ] = useState(false);
 	const [ showDeleteWishlistEntry, setShowDeleteWishlistEntry ] = useState(false);
@@ -27,8 +31,6 @@ function adminWindow() {
 	const [ showGameIdToModify, setShowGameIdToModify ] = useState('');
 	const [ showModifyWishlistEntry, setShowModifyWishlistEntry ] = useState(false);
 	const [ showModifyWishlistEntryRefresh, setShowModifyWishlistEntryRefresh ] = useState(true);
-
-	const [ loginId, setLoginId ] = useState('MKUC');
 
 	const [ showSuccess, setShowSuccess ] = useState(false);
 	const [ successMessage, setSuccessMessage ] = useState('');
@@ -100,6 +102,12 @@ function adminWindow() {
 				<Navbar.Text>{loginId !== '' ? 'Logged in as: ' + loginId : ''}</Navbar.Text>
 			</Navbar>
 
+			<LoginDialog
+				show={showSubmitDialog ? true : false}
+				setShow={() => setShowSubmitDialog(false)}
+				setLoginId={(x) => setLoginId(x)}
+			/>
+
 			<GetWishlistGameId
 				show={showGetWishlistGameId}
 				setShow={(x) => setShowGetWishlistGameId(x)}
@@ -165,31 +173,3 @@ function adminWindow() {
 }
 
 export default adminWindow;
-
-// function CreateButton(onClickFunc, buttonText, disabled) {
-// 	return (
-// 		<Button variant="outline-success" onClick={onClickFunc} disabled={disabled}>
-// 			{buttonText}
-// 		</Button>
-// 	);
-// }
-// {CreateButton(() => setShowAddMember(true), 'Add member')}
-// {CreateButton(() => setShowDeleteMember(true), 'Delete member')}
-// {CreateButton(() => {
-// 	resetAllViews();
-// 	setShowAllMembers(true);
-// 	setShowAllMembersRefresh(true);
-// }, 'Get all members')}
-// {CreateButton(() => setShowAddMember(true), 'Add wishlist')}
-// {CreateButton(() => setShowDeleteWishlistEntry(true), 'Delete wishlist')}
-// {CreateButton(() => {
-// 	resetAllViews();
-// 	setShowWishlistSelections(true);
-// 	setshowWishlistSelectionsRefresh(true);
-// }, 'Wishlist Selections')}
-// {CreateButton(() => alert('Not supported YET!'), 'Sync with BGG', true)}
-// {CreateButton(() => {
-// 	resetAllViews();
-// 	setShowGetWishlistGameId(true);
-// 	setShowModifyWishlistEntryRefresh(true);
-// }, 'Modify Game')}
