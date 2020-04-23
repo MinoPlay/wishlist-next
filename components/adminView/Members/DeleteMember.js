@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 
-async function ValidateLoginId(loginId) {
-	console.log(`Validating login ID ${loginId}`);
-	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetMember?initials=${loginId}`;
-	var buildUrl = `http://localhost:7071/api/GetMember?initials=${loginId}`;
+async function ValidateLoginId(baseUrl, loginId) {
+	var buildUrl = `${baseUrl}/GetMember?initials=${loginId}`;
 	const result = await fetch(buildUrl);
 	console.log(result);
 	const status = result.status;
@@ -22,11 +20,11 @@ function DeleteMember(props) {
 	const onClickLogin = () => {
 		console.log('onClickLogin handler');
 
-		ValidateLoginId(loginId).then((x) => {
+		ValidateLoginId(props.baseUrl, loginId).then((x) => {
 			if (x == 200) {
 				setLoginId(loginId);
 				// add new member
-				fetch(`http://localhost:7071/api/DeleteMember?initials=${loginId}`);
+				fetch(`${props.baseUrl}/DeleteMember?initials=${loginId}`);
 				props.success(true);
 				props.successMessage(`Successfully deleted member '${loginId}'`);
 				props.setShow(false);

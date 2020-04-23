@@ -3,9 +3,9 @@ import React from 'react';
 import fetch from 'isomorphic-unfetch';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-async function FetchAllMembers() {
+async function FetchAllMembers(baseUrl) {
 	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetAllMembers`;
-	var buildUrl = `http://localhost:7071/api/GetAllMembers`;
+	var buildUrl = `${baseUrl}/GetAllMembers`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	return data;
@@ -24,7 +24,7 @@ function GetAllMembers(props) {
 	const [ allMembers, setAllMembers ] = useState([]);
 
 	if (props.refresh) {
-		FetchAllMembers().then((response) => {
+		FetchAllMembers(props.baseUrl).then((response) => {
 			const initials = response
 				.map((x) => ({
 					Members: x.initials

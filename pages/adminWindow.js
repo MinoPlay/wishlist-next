@@ -12,8 +12,11 @@ import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlist
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
 
+const baseUrl = 'http://localhost:7071/api';
+//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+
 function adminWindow() {
-	const [ showSubmitDialog, setShowSubmitDialog ] = useState(true);
+	const [ showLoginDialog, setShowLoginDialog ] = useState(true);
 	const [ loginId, setLoginId ] = useState('');
 
 	const [ showAddMember, setShowAddMember ] = useState(false);
@@ -69,7 +72,7 @@ function adminWindow() {
 						Get all members
 					</Button>
 
-					<Button variant="outline-success" onClick={() => setShowAddMember(true)}>
+					<Button variant="outline-success" onClick={() => setShowAddWishlistEntry(true)}>
 						Add wishlist
 					</Button>
 					<Button variant="outline-success" onClick={() => setShowDeleteWishlistEntry(true)}>
@@ -103,8 +106,9 @@ function adminWindow() {
 			</Navbar>
 
 			<LoginDialog
-				show={showSubmitDialog ? true : false}
-				setShow={() => setShowSubmitDialog(false)}
+				baseUrl={baseUrl}
+				show={showLoginDialog ? true : false}
+				setShow={() => setShowLoginDialog(false)}
 				setLoginId={(x) => setLoginId(x)}
 			/>
 
@@ -118,6 +122,7 @@ function adminWindow() {
 
 			{showModifyWishlistEntry ? (
 				<ModifyWishlistEntry
+					baseUrl={baseUrl}
 					gameId={showGameIdToModify}
 					refresh={showModifyWishlistEntryRefresh}
 					setRefresh={() => setShowModifyWishlistEntryRefresh(false)}
@@ -125,6 +130,7 @@ function adminWindow() {
 			) : null}
 
 			<AddMember
+				baseUrl={baseUrl}
 				show={showAddMember}
 				setShow={(x) => setShowAddMember(x)}
 				success={(x) => setShowSuccess(x)}
@@ -132,6 +138,7 @@ function adminWindow() {
 			/>
 
 			<DeleteMember
+				baseUrl={baseUrl}
 				show={showDeleteMember}
 				setShow={(x) => setShowDeleteMember(x)}
 				success={(x) => setShowSuccess(x)}
@@ -139,10 +146,15 @@ function adminWindow() {
 			/>
 
 			{showAllMembers ? (
-				<GetAllMembers refresh={showAllMembersRefresh} setRefresh={() => setShowAllMembersRefresh(false)} />
+				<GetAllMembers
+					baseUrl={baseUrl}
+					refresh={showAllMembersRefresh}
+					setRefresh={() => setShowAllMembersRefresh(false)}
+				/>
 			) : null}
 
 			<AddWishlistEntry
+				baseUrl={baseUrl}
 				show={showAddWishlistEntry}
 				setShow={(x) => setShowAddWishlistEntry(x)}
 				success={(x) => setShowSuccess(x)}
@@ -150,6 +162,7 @@ function adminWindow() {
 			/>
 
 			<DeleteWishlistEntry
+				baseUrl={baseUrl}
 				show={showDeleteWishlistEntry}
 				setShow={(x) => setShowDeleteWishlistEntry(x)}
 				success={(x) => setShowSuccess(x)}
@@ -158,6 +171,7 @@ function adminWindow() {
 
 			{showWishlistSelections ? (
 				<GetWishlistSelections
+					baseUrl={baseUrl}
 					refresh={showWishlistSelectionsRefresh}
 					setRefresh={() => setShowWishlistSelectionsRefresh(false)}
 				/>

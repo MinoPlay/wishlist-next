@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 
-async function ValidateGameExists(gameId) {
-	console.log(`ValidateGameExists ${gameId}`);
-	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetMember?initials=${loginId}`;
-	var buildUrl = `http://localhost:7071/api/GetGame?gameId=${gameId}`;
+async function ValidateGameExists(baseUrl, gameId) {
+	var buildUrl = `${baseUrl}/GetGame?gameId=${gameId}`;
 	const result = await fetch(buildUrl);
 	console.log(result);
 	const status = result.status;
@@ -22,11 +20,11 @@ function AddWishlistEntry(props) {
 	const onClickLogin = () => {
 		console.log('onClickLogin handler');
 
-		ValidateGameExists(gameId).then((x) => {
+		ValidateGameExists(props.baseUrl, gameId).then((x) => {
 			if (x != 200) {
 				setGameId(gameId);
 				// add new member
-				fetch(`http://localhost:7071/api/AddGame?gameId=${gameId}`);
+				fetch(`${props.baseUrl}/AddGame?gameId=${gameId}`);
 				props.success(true);
 				props.successMessage(`Successfully added new game to the wishlist '${gameId}'`);
 				props.setShow(false);

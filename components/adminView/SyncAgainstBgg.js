@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-async function Response() {
+async function Response(baseUrl) {
 	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetWishlistSelections`;
-	var buildUrl = `http://localhost:7071/api/SyncWishlistAgainstBGG`;
+	var buildUrl = `${baseUrl}/SyncWishlistAgainstBGG`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	console.log('SyncAgainstBgg');
@@ -15,7 +15,7 @@ async function Response() {
 function SyncAgainstBgg(props) {
 	const [ response, setResponse ] = useState([]);
 
-	Response.then((x) => setResponse(x));
+	Response(props.baseUrl).then((x) => setResponse(x));
 	console.log('response');
 	console.log(response);
 

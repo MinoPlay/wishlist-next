@@ -6,6 +6,9 @@ import Header from '../components/Header';
 import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 
+const baseUrl = 'http://localhost:7071/api';
+//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+
 const columns = [
 	'Select',
 	'',
@@ -80,11 +83,17 @@ export default function index(props) {
 				crossOrigin="anonymous"
 			/>
 			<LoginDialog
+				baseUrl={baseUrl}
 				show={showSubmitDialog ? true : false}
 				setShow={() => setShowSubmitDialog(false)}
 				setLoginId={(x) => setLoginId(x)}
 			/>
-			<Header gameSelections={gameSelections} clearEverything={clearEverything} loginId={loginId} />
+			<Header
+				baseUrl={baseUrl}
+				gameSelections={gameSelections}
+				clearEverything={clearEverything}
+				loginId={loginId}
+			/>
 			<table className="table table-hover table-striped table-dark table-sm">
 				<thead>
 					<tr>
@@ -134,8 +143,7 @@ export default function index(props) {
 }
 
 index.getInitialProps = async function() {
-	const response = await fetch('http://localhost:7071/api/GetWishlist');
-	// const response = await fetch('https://bgg-api.azurewebsites.net/api/GetWishlist');
+	const response = await fetch(`${baseUrl}/GetWishlist`);
 	const data = await response.json();
 	return { games: data.map((entry) => entry) };
 };

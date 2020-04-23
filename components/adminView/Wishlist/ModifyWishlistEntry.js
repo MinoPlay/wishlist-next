@@ -5,16 +5,16 @@ import { useState } from 'react';
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 
-async function FetchWishlistSelection(gameId) {
+async function FetchWishlistSelection(baseUrl, gameId) {
 	console.log(`Validating login ID ${gameId}`);
-	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetMember?initials=${loginId}`;
-	var buildUrl = `http://localhost:7071/api/GetGame?gameId=${gameId}`;
+	var buildUrl = `${baseUrl}/GetGame?gameId=${gameId}`;
 	const response = await fetch(buildUrl);
 	const responseJson = await response.json();
 	return responseJson;
 }
 
 async function UpdateGame(
+	baseUrl,
 	gameId,
 	minplayers,
 	maxplayers,
@@ -25,18 +25,8 @@ async function UpdateGame(
 	averageWeight
 ) {
 	console.log('updateGame');
-	console.log(`gameId ${gameId}`);
-	// console.log(`gameTitle${gameTitle}`);
-	// console.log(`description${description}`);
-	console.log(`minplayers ${minplayers}`);
-	console.log(`maxplayers ${maxplayers}`);
-	console.log(`minplaytime ${minplaytime}`);
-	console.log(`maxplaytime ${maxplaytime}`);
-	console.log(`minage ${minage}`);
-	console.log(`languageDependence ${languageDependence}`);
-	console.log(`averageWeight ${averageWeight}`);
-	var parameters = `gameId=${gameId}&minplayers=${minplayers}&maxplayers=${maxplayers}&minplaytime=${minplaytime}&maxplaytime=${maxplaytime}&minage=${maxplaytime}&languageDependence=${languageDependence}&averageWeight=${averageWeight}`;
-	var buildUrl = `http://localhost:7071/api/UpdateGame?${parameters}`;
+	var parameters = `gameId=${gameId}&minplayers=${minplayers}&maxplayers=${maxplayers}&minplaytime=${minplaytime}&maxplaytime=${maxplaytime}&minage=${minage}&languageDependence=${languageDependence}&averageWeight=${averageWeight}`;
+	var buildUrl = `${baseUrl}/UpdateGame?${parameters}`;
 	const response = await fetch(buildUrl);
 	console.log(response.status);
 }
@@ -65,9 +55,10 @@ function ModifyWishlistEntry(props) {
 	const [ minage, setMinage ] = useState('');
 	const [ languageDependence, setLanguageDependence ] = useState('');
 	const [ averageWeight, setAverageWeight ] = useState('');
+	const [ baseUrl, setBaseUrl ] = useState('');
 
 	if (props.refresh) {
-		FetchWishlistSelection(props.gameId).then((wishlistSelection) => {
+		FetchWishlistSelection(props.baseUrl, props.gameId).then((wishlistSelection) => {
 			//setWishlistSelection(response);
 			setGameId(wishlistSelection['gameId']);
 			setGameTitle(wishlistSelection['gameTitle']);
@@ -80,6 +71,7 @@ function ModifyWishlistEntry(props) {
 			setMinage(wishlistSelection['minage']);
 			setLanguageDependence(wishlistSelection['languageDependence']);
 			setAverageWeight(wishlistSelection['averageWeight']);
+			setBaseUrl(props.baseUrl);
 		});
 		//console.log(wishlistSelection);
 
@@ -141,6 +133,7 @@ function ModifyWishlistEntry(props) {
 			<Button
 				onClick={() =>
 					UpdateGame(
+						baseUrl,
 						gameId,
 						minplayers,
 						maxplayers,

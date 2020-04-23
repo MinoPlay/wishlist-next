@@ -3,9 +3,8 @@ import { useState } from 'react';
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
 
-async function FetchWishlist() {
-	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetWishlistSelections`;
-	var buildUrl = `http://localhost:7071/api/GetWishlistSelections`;
+async function FetchWishlist(baseUrl) {
+	var buildUrl = `${baseUrl}/GetWishlistSelections`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	return data;
@@ -57,7 +56,7 @@ function GetWishlistSelections(props) {
 	const [ groupedGamesWithWeight, setGroupedGamesWithWeight ] = useState([]);
 
 	if (props.refresh) {
-		FetchWishlist().then((response) => {
+		FetchWishlist(props.baseUrl).then((response) => {
 			const wishlist = response.map((x) => x);
 			const tempData = wishlist.map((wishlistEntry) => ({
 				User: wishlistEntry.userId,
@@ -106,7 +105,7 @@ function GetWishlistSelections(props) {
 				bordered={false}
 				rowStyle={{ textAlign: 'center' }}
 			/>
-			<h1 style={{ 'text-align': 'center' }}>Detailed overview</h1>
+			<h1 style={{ textAlign: 'center' }}>Detailed overview</h1>
 			<BootstrapTable keyField="id" data={data} columns={columns} />
 		</div>
 	);

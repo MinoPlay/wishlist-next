@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 
-async function ValidateLoginId(loginId) {
-	console.log(`Validating login ID ${loginId}`);
-	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetMember?initials=${loginId}`;
-	var buildUrl = `http://localhost:7071/api/GetMember?initials=${loginId}`;
+async function ValidateLoginId(baseUrl, loginId) {
+	var buildUrl = `${baseUrl}/GetMember?initials=${loginId}`;
 	const result = await fetch(buildUrl);
 	console.log(result);
 	const status = result.status;
@@ -22,7 +20,7 @@ function LoginDialog(props) {
 	const onClickLogin = () => {
 		console.log('onClickLogin handler');
 
-		ValidateLoginId(loginId).then((x) => {
+		ValidateLoginId(props.baseUrl, loginId).then((x) => {
 			if (x == 200) {
 				props.setLoginId(loginId);
 				props.setShow();

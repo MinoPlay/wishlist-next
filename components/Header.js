@@ -6,9 +6,9 @@ import SuccessSubmit from './SuccessSubmit';
 import ReSubmitDialog from './ReSubmitDialog';
 import fetch from 'isomorphic-unfetch';
 
-async function CheckWishlistAlreadySubmitted(userName) {
+async function CheckWishlistAlreadySubmitted(baseUrl, userName) {
 	// var buildUrl = `https://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=${userName}`;
-	var buildUrl = `http://localhost:7071/api/WishlistSelectionExists?initials=${userName}`;
+	var buildUrl = `${baseUrl}/WishlistSelectionExists?initials=${userName}`;
 	const response = fetch(buildUrl);
 
 	return await response;
@@ -29,7 +29,7 @@ function Header(props) {
 
 	const onResubmitDialog = () => {
 		console.log('onResubmitDialog');
-		CheckWishlistAlreadySubmitted(props.loginId).then((x) => {
+		CheckWishlistAlreadySubmitted(props.baseUrl, props.loginId).then((x) => {
 			if (x.status == 200) {
 				console.log('status: 200');
 				setShowResubmitDialog(true);
@@ -72,6 +72,7 @@ function Header(props) {
 				resubmitSelection={() => onDoResubmit()}
 			/>
 			<SubmitDialog
+				baseUrl={props.baseUrl}
 				show={show}
 				setShow={() => setShow(false)}
 				gameSelections={props.gameSelections}
