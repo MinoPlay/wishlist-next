@@ -12,10 +12,11 @@ import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlist
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
 
-const baseUrl = 'http://localhost:7071/api';
-//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+//const baseUrl = 'http://localhost:7071/api';
+const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
-function adminWindow() {
+function adminWindow(props) {
+	const [ games, setGames ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(true);
 	const [ loginId, setLoginId ] = useState('');
 
@@ -37,6 +38,16 @@ function adminWindow() {
 
 	const [ showSuccess, setShowSuccess ] = useState(false);
 	const [ successMessage, setSuccessMessage ] = useState('');
+
+	if (games.length === 0) {
+		console.log('populating games...');
+		const getGamesIds = props.games.map((x) => ({
+			gameTitle: x.gameTitle,
+			gameId: x.gameId
+		}));
+		setGames(getGamesIds);
+		console.log(getGamesIds);
+	}
 
 	function resetAllViews() {
 		setShowAllMembers(false);
@@ -101,6 +112,9 @@ function adminWindow() {
 					>
 						Modify Game
 					</Button>
+					<Button variant="outline-success" href="/">
+						Wishlist
+					</Button>
 				</Nav>
 				<Navbar.Text>{loginId !== '' ? 'Logged in as: ' + loginId : ''}</Navbar.Text>
 			</Navbar>
@@ -114,6 +128,7 @@ function adminWindow() {
 
 			<GetWishlistGameId
 				show={showGetWishlistGameId}
+				games={games}
 				setShow={(x) => setShowGetWishlistGameId(x)}
 				gameId={showGameIdToModify}
 				setGameId={(x) => setShowGameIdToModify(x)}
@@ -185,5 +200,11 @@ function adminWindow() {
 		</div>
 	);
 }
+
+adminWindow.getInitialProps = async function() {
+	const response = await fetch(`${baseUrl}/GetWishlist`);
+	const data = await response.json();
+	return { games: data.map((entry) => entry) };
+};
 
 export default adminWindow;

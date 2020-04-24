@@ -54,6 +54,9 @@ function Header(props) {
 					<Button variant="outline-success" onClick={() => onResubmitDialog()}>
 						Submit
 					</Button>
+					<Button variant="outline-success" href="/adminWindow">
+						Admin view
+					</Button>
 				</Nav>
 				<Navbar.Text>{props.loginId !== '' ? 'Logged in as: ' + props.loginId : ''}</Navbar.Text>
 				{/* <Form inline>

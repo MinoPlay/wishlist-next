@@ -82,7 +82,7 @@ function ModifyWishlistEntry(props) {
 		{ Name: 'gameId', Value: gameId },
 		{ Name: 'gameTitle', Value: gameTitle },
 		{ Name: 'thumbnail', Value: thumbnail },
-		{ Name: 'description', Value: description },
+		{ Name: 'description', Value: <div dangerouslySetInnerHTML={{ __html: description }} /> },
 		{ Name: 'minplayers', Value: minplayers },
 		{ Name: 'maxplayers', Value: maxplayers },
 		{ Name: 'minplaytime', Value: minplaytime },

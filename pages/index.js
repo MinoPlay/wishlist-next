@@ -5,20 +5,63 @@ import ReactTextCollapse from 'react-text-collapse';
 import Header from '../components/Header';
 import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
+import BootstrapTable from 'react-bootstrap-table-next';
 
-const baseUrl = 'http://localhost:7071/api';
-//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+//const baseUrl = 'http://localhost:7071/api';
+const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
-const columns = [
-	'Select',
-	'',
-	'Title',
-	'Description',
-	'Players',
-	'Playtime',
-	'MinAge',
-	'Avg. Weight',
-	'Language requirement'
+const columns2 = [
+	{
+		dataField: 'Select',
+		text: 'Select',
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'Thumbnail',
+		text: '',
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'Title',
+		text: 'Title',
+		sort: true,
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'Description',
+		text: 'Description',
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'Players',
+		text: 'Players',
+		sort: true,
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'Playtime',
+		text: 'Playtime',
+		sort: true,
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'MinAge',
+		text: 'MinAge',
+		sort: true,
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'AvgWeight',
+		text: 'Avg. Weight',
+		sort: true,
+		headerAlign: 'center'
+	},
+	{
+		dataField: 'LanguageRequirement',
+		text: 'Language requirement',
+		sort: true,
+		headerAlign: 'center'
+	}
 ];
 
 const TEXT_COLLAPSE_OPTIONS = {
@@ -45,6 +88,28 @@ export default function index(props) {
 		// setSelectedGames([]);
 		// setSelectedGamesNames([]);
 	}
+
+	let data = props.games.map((x) => ({
+		Select: (
+			<WeightDropdown
+				availableDropdowns={availableDropdowns}
+				setAvailableDropdowns={setAvailableDropdowns}
+				onSelectSelection={(a) => onSelectSelection(x, a)}
+			/>
+		),
+		Thumbnail: <img src={x.thumbnail} />,
+		Title: x.gameTitle,
+		Description: (
+			<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
+				<div dangerouslySetInnerHTML={{ __html: x.description }} />
+			</ReactTextCollapse>
+		),
+		Players: `${x.minplayers}-${x.maxplayers}`,
+		Playtime: `${x.minplaytime}-${x.maxplaytime}`,
+		MinAge: x.minage,
+		AvgWeight: Math.round(x.averageWeight * 100) / 100,
+		LanguageRequirement: x.languageDependence
+	}));
 
 	function onSelectSelection(x, weight) {
 		console.log('enter onSelectSelection');
@@ -94,50 +159,7 @@ export default function index(props) {
 				clearEverything={clearEverything}
 				loginId={loginId}
 			/>
-			<table className="table table-hover table-striped table-dark table-sm">
-				<thead>
-					<tr>
-						{columns.map((x) => (
-							<th style={{ textAlign: 'center', verticalAlign: 'middle' }} scope="col" key={x}>
-								{x}
-							</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{props.games.map((x) => {
-						return (
-							<tr key={x.gameId}>
-								<td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-									<WeightDropdown
-										availableDropdowns={availableDropdowns}
-										setAvailableDropdowns={setAvailableDropdowns}
-										onSelectSelection={(a) => onSelectSelection(x, a)}
-									/>
-								</td>
-								<td style={{ textAlign: 'center' }}>
-									<img src={x.thumbnail} />
-								</td>
-								<td>{x.gameTitle}</td>
-								<td>
-									<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
-										{x.description}
-									</ReactTextCollapse>
-								</td>
-								<td style={{ textAlign: 'center' }}>
-									{x.minplayers}-{x.maxplayers}
-								</td>
-								<td style={{ textAlign: 'center' }}>
-									{x.minplaytime}-{x.maxplaytime}
-								</td>
-								<td style={{ textAlign: 'center' }}>{x.minage}</td>
-								<td style={{ textAlign: 'center' }}>{Math.round(x.averageWeight * 100) / 100}</td>
-								<td style={{ textAlign: 'center' }}>{x.languageDependence}</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</table>
+			<BootstrapTable keyField="id" data={data} columns={columns2} bordered={false} />
 		</div>
 	);
 }
