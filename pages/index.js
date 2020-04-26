@@ -7,8 +7,8 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-//const baseUrl = 'http://localhost:7071/api';
-const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+const baseUrl = 'http://localhost:7071/api';
+//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
 const columns2 = [
 	{

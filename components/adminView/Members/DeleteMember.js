@@ -43,19 +43,11 @@ function DeleteMember(props) {
 				<Modal.Body>
 					<Form>
 						<Form.Group controlId="formBasicId">
-							<Form.Label>Enter member initials</Form.Label>
-							<Form.Control
-								type="id"
-								placeholder="initials"
-								onChange={(e) => setLoginId(e.target.value)}
-								onKeyPress={(e) => {
-									if (event.charCode == 13) {
-										e.preventDefault();
-										e.stopPropagation();
-										onClickLogin();
-									}
-								}}
-							/>
+							<Form.Control as="select" onChange={(e) => setLoginId(e.target.value)}>
+								{props.members.map((g) => {
+									return <option>{g}</option>;
+								})}
+							</Form.Control>
 						</Form.Group>
 					</Form>
 				</Modal.Body>

@@ -12,13 +12,15 @@ import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlist
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
 
-//const baseUrl = 'http://localhost:7071/api';
-const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+const baseUrl = 'http://localhost:7071/api';
+//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
 function adminWindow(props) {
+	const devMode = true;
 	const [ games, setGames ] = useState([]);
-	const [ showLoginDialog, setShowLoginDialog ] = useState(true);
-	const [ loginId, setLoginId ] = useState('');
+	const [ members, setMembers ] = useState([]);
+	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
+	const [ loginId, setLoginId ] = useState('unknown');
 
 	const [ showAddMember, setShowAddMember ] = useState(false);
 	const [ showDeleteMember, setShowDeleteMember ] = useState(false);
@@ -39,20 +41,26 @@ function adminWindow(props) {
 	const [ showSuccess, setShowSuccess ] = useState(false);
 	const [ successMessage, setSuccessMessage ] = useState('');
 
-	if (games.length === 0) {
+	function resetAllViews() {
+		setShowAllMembers(false);
+		setShowWishlistSelections(false);
+		setShowModifyWishlistEntry(false);
+	}
+
+	function populateGames() {
 		console.log('populating games...');
 		const getGamesIds = props.games.map((x) => ({
 			gameTitle: x.gameTitle,
 			gameId: x.gameId
 		}));
-		setGames(getGamesIds);
 		console.log(getGamesIds);
+		setGames(getGamesIds);
 	}
 
-	function resetAllViews() {
-		setShowAllMembers(false);
-		setShowWishlistSelections(false);
-		setShowModifyWishlistEntry(false);
+	function populateMembers() {
+		console.log('populating members...');
+		console.log(props.members);
+		setMembers(props.members);
 	}
 
 	return (
@@ -69,7 +77,13 @@ function adminWindow(props) {
 					<Button variant="outline-success" onClick={() => setShowAddMember(true)}>
 						Add member
 					</Button>
-					<Button variant="outline-success" onClick={() => setShowDeleteMember(true)}>
+					<Button
+						variant="outline-success"
+						onClick={() => {
+							setShowDeleteMember(true);
+							populateMembers();
+						}}
+					>
 						Delete member
 					</Button>
 					<Button
@@ -86,7 +100,13 @@ function adminWindow(props) {
 					<Button variant="outline-success" onClick={() => setShowAddWishlistEntry(true)}>
 						Add wishlist
 					</Button>
-					<Button variant="outline-success" onClick={() => setShowDeleteWishlistEntry(true)}>
+					<Button
+						variant="outline-success"
+						onClick={() => {
+							populateGames();
+							setShowDeleteWishlistEntry(true);
+						}}
+					>
 						Delete wishlist
 					</Button>
 					<Button
@@ -106,6 +126,7 @@ function adminWindow(props) {
 						variant="outline-success"
 						onClick={() => {
 							resetAllViews();
+							populateGames();
 							setShowGetWishlistGameId(true);
 							setShowModifyWishlistEntryRefresh(true);
 						}}
@@ -154,6 +175,7 @@ function adminWindow(props) {
 
 			<DeleteMember
 				baseUrl={baseUrl}
+				members={members}
 				show={showDeleteMember}
 				setShow={(x) => setShowDeleteMember(x)}
 				success={(x) => setShowSuccess(x)}
@@ -179,6 +201,7 @@ function adminWindow(props) {
 			<DeleteWishlistEntry
 				baseUrl={baseUrl}
 				show={showDeleteWishlistEntry}
+				games={games}
 				setShow={(x) => setShowDeleteWishlistEntry(x)}
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
@@ -204,7 +227,9 @@ function adminWindow(props) {
 adminWindow.getInitialProps = async function() {
 	const response = await fetch(`${baseUrl}/GetWishlist`);
 	const data = await response.json();
-	return { games: data.map((entry) => entry) };
+	const response2 = await fetch(`${baseUrl}/GetAllMembers`);
+	const data2 = await response2.json();
+	return { games: data.map((entry) => entry), members: data2.map((entry) => entry.initials) };
 };
 
 export default adminWindow;

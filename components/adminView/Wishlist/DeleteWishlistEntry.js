@@ -17,6 +17,12 @@ async function ValidateGameExists(baseUrl, gameId) {
 function DeleteWishlistEntry(props) {
 	const [ gameId, setGameId ] = useState('');
 
+	function GetGameIdFromTitle(title) {
+		const match = props.games.filter((x) => x.gameTitle === title);
+		console.log(match);
+		return match[0].gameId;
+	}
+
 	const onClickLogin = () => {
 		ValidateGameExists(props.baseUrl, gameId).then((x) => {
 			if (x != 200) {
@@ -41,19 +47,11 @@ function DeleteWishlistEntry(props) {
 				<Modal.Body>
 					<Form>
 						<Form.Group controlId="formBasicId">
-							<Form.Label>Enter game id</Form.Label>
-							<Form.Control
-								type="id"
-								placeholder="game id"
-								onChange={(e) => setGameId(e.target.value)}
-								onKeyPress={(e) => {
-									if (event.charCode == 13) {
-										e.preventDefault();
-										e.stopPropagation();
-										onClickLogin();
-									}
-								}}
-							/>
+							<Form.Control as="select" onChange={(e) => setGameId(GetGameIdFromTitle(e.target.value))}>
+								{props.games.map((g) => {
+									return <option>{g.gameTitle}</option>;
+								})}
+							</Form.Control>
 						</Form.Group>
 					</Form>
 				</Modal.Body>
