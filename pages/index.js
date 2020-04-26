@@ -73,8 +73,9 @@ const TEXT_COLLAPSE_OPTIONS = {
 };
 
 export default function index(props) {
+	const devMode = true;
 	const [ gameSelections, setGameSelections ] = useState([]);
-	const [ showSubmitDialog, setShowSubmitDialog ] = useState(true);
+	const [ showSubmitDialog, setShowSubmitDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
 
 	//control the available selection for weight dropdowns

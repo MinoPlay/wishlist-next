@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import LoginDialog from '../components/LoginDialog';
 import AddMember from '../components/adminView/Members/AddMember';
 import DeleteMember from '../components/adminView/Members/DeleteMember';
@@ -74,70 +74,76 @@ function adminWindow(props) {
 			<Navbar bg="dark" variant="dark" expand="lg">
 				<Navbar.Brand href="#home">Oticon Board Games Club (Admin view)</Navbar.Brand>
 				<Nav className="mr-auto">
-					<Button variant="outline-success" onClick={() => setShowAddMember(true)}>
-						Add member
-					</Button>
-					<Button
-						variant="outline-success"
-						onClick={() => {
-							setShowDeleteMember(true);
-							populateMembers();
-						}}
-					>
-						Delete member
-					</Button>
-					<Button
-						variant="outline-success"
-						onClick={() => {
-							resetAllViews();
-							setShowAllMembers(true);
-							setShowAllMembersRefresh(true);
-						}}
-					>
-						Get all members
-					</Button>
+					<NavDropdown title="Members" id="basic-nav-dropdown">
+						<NavDropdown.Item onClick={() => setShowAddMember(true)}>Add member</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item
+							onClick={() => {
+								setShowDeleteMember(true);
+								populateMembers();
+							}}
+						>
+							Delete member
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item
+							onClick={() => {
+								resetAllViews();
+								setShowAllMembers(true);
+								setShowAllMembersRefresh(true);
+							}}
+						>
+							Get all members
+						</NavDropdown.Item>
+					</NavDropdown>
 
-					<Button variant="outline-success" onClick={() => setShowAddWishlistEntry(true)}>
-						Add wishlist
-					</Button>
-					<Button
-						variant="outline-success"
-						onClick={() => {
-							populateGames();
-							setShowDeleteWishlistEntry(true);
-						}}
-					>
-						Delete wishlist
-					</Button>
-					<Button
-						variant="outline-success"
-						onClick={() => {
-							resetAllViews();
-							setShowWishlistSelections(true);
-							setShowWishlistSelectionsRefresh(true);
-						}}
-					>
-						Wishlist Selections
-					</Button>
-					<Button variant="outline-success" onClick={() => alert('Not supported YET!')} disabled>
-						Sync with BGG
-					</Button>
-					<Button
-						variant="outline-success"
-						onClick={() => {
-							resetAllViews();
-							populateGames();
-							setShowGetWishlistGameId(true);
-							setShowModifyWishlistEntryRefresh(true);
-						}}
-					>
-						Modify Game
-					</Button>
-					<Button variant="outline-success" href="/">
-						Wishlist
-					</Button>
+					<NavDropdown title="Wishlist" id="basic-nav-dropdown">
+						<NavDropdown.Item onClick={() => setShowAddWishlistEntry(true)}>Add game</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item
+							onClick={() => {
+								populateGames();
+								setShowDeleteWishlistEntry(true);
+							}}
+						>
+							Delete game
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item
+							onClick={() => {
+								resetAllViews();
+								setShowWishlistSelections(true);
+								setShowWishlistSelectionsRefresh(true);
+							}}
+						>
+							Wishlist Selections
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item onClick={() => alert('Not supported YET!')} disabled>
+							Sync with BGG
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+						<NavDropdown.Item
+							onClick={() => {
+								resetAllViews();
+								populateGames();
+								setShowGetWishlistGameId(true);
+								setShowModifyWishlistEntryRefresh(true);
+							}}
+						>
+							Modify Game
+						</NavDropdown.Item>
+						<NavDropdown.Divider />
+					</NavDropdown>
 				</Nav>
-				<Navbar.Text>{loginId !== '' ? 'Logged in as: ' + loginId : ''}</Navbar.Text>
+				<Nav>
+					<Button variant="outline-success" href="/">
+						Back to wishlist
+					</Button>
+					<Navbar.Text>
+						Logged in as: <a href="">{loginId}</a>
+					</Navbar.Text>
+				</Nav>
 			</Navbar>
 
 			<LoginDialog

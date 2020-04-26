@@ -54,7 +54,7 @@ function Header(props) {
 					<Button variant="outline-success" onClick={() => onResubmitDialog()}>
 						Submit
 					</Button>
-					<Button variant="outline-success" href="/adminWindow">
+					<Button variant="outline-success" href="/adminWindow.html">
 						Admin view
 					</Button>
 				</Nav>
