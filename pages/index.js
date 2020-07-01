@@ -78,7 +78,7 @@ export default function index(props) {
 	const [ loginId, setLoginId ] = useState('unknown');
 
 	//control the available selection for weight dropdowns
-	const [ availableDropdowns, setAvailableDropdowns ] = useState([ 5, 3, 2, 1, 0 ]);
+	const [ availableDropdowns, setAvailableDropdowns ] = useState([ 6, 5, 4, 3, 2, 1, 0 ]);
 
 	function clearEverything() {
 		console.log('invoking clearEverything (for now do nothing, need to implement');
