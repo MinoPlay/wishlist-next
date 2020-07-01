@@ -73,7 +73,7 @@ const TEXT_COLLAPSE_OPTIONS = {
 };
 
 export default function index(props) {
-	const devMode = true;
+	const devMode = false;
 	const [ gameSelections, setGameSelections ] = useState([]);
 	const [ showSubmitDialog, setShowSubmitDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
@@ -98,7 +98,11 @@ export default function index(props) {
 				onSelectSelection={(a) => onSelectSelection(x, a)}
 			/>
 		),
-		Thumbnail: <img src={x.thumbnail} />,
+		Thumbnail: (
+			<a href={`https://boardgamegeek.com/boardgame/${x.gameId}`} target="_blank">
+				<img src={x.thumbnail} />
+			</a>
+		),
 		Title: x.gameTitle,
 		Description: (
 			<ReactTextCollapse options={TEXT_COLLAPSE_OPTIONS}>
@@ -107,7 +111,7 @@ export default function index(props) {
 		),
 		Players: `${x.minplayers}-${x.maxplayers}`,
 		Playtime: `${x.minplaytime}-${x.maxplaytime}`,
-		MinAge: x.minage,
+		MinAge: parseInt(x.minage),
 		AvgWeight: Math.round(x.averageWeight * 100) / 100,
 		LanguageRequirement: x.languageDependence
 	}));

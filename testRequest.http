@@ -28,3 +28,8 @@ GET http://localhost:7071/api/DeleteGame
 GET http://localhost:7071/api/DeleteMember
 ###
 GET http://localhost:7071/api/DeleteMemberWishlist
+
+### Add some sessions
+GET http://localhost:7071/api/AddVotingSession?sessionId=5
+###
+GET http://localhost:7071/api/GetAllVotingSessions
