@@ -1,15 +1,15 @@
-GET http://localhost:7071/api/GetWishlist
+GET https://bgg-api.azurewebsites.net/api/GetWishlist
 ###
 GET http://localhost:7071/api/GetMember?initials=MKUC
 ### missing user
 GET http://localhost:7071/api/GetMember?initials=AAAAA
 ###
-GET http://localhost:7071/api/GetAllMembers
+GET https://bgg-api.azurewebsites.net/api/GetAllMembers
 ###
 ### Test wishlist selection exists
 GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
 ### Get all wishlists
-GET http://localhost:7071/api/GetWishlistSelections
+GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
 ###
 GET http://localhost:7071/api/SyncWishlistAgainstBGG
 ###

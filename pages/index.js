@@ -7,8 +7,8 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const baseUrl = 'http://localhost:7071/api';
-//const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+const devMode = true;
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 const columns2 = [
 	{
@@ -73,9 +73,8 @@ const TEXT_COLLAPSE_OPTIONS = {
 };
 
 export default function index(props) {
-	const devMode = false;
 	const [ gameSelections, setGameSelections ] = useState([]);
-	const [ showSubmitDialog, setShowSubmitDialog ] = useState(devMode ? false : true);
+	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
 
 	//control the available selection for weight dropdowns
@@ -154,8 +153,8 @@ export default function index(props) {
 			/>
 			<LoginDialog
 				baseUrl={baseUrl}
-				show={showSubmitDialog ? true : false}
-				setShow={() => setShowSubmitDialog(false)}
+				show={showLoginDialog ? true : false}
+				setShow={() => setShowLoginDialog(false)}
 				setLoginId={(x) => setLoginId(x)}
 			/>
 			<Header
