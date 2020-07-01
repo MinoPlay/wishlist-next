@@ -12,7 +12,7 @@ import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlist
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
 
-const devMode = true;
+const devMode = false;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 function adminWindow(props) {

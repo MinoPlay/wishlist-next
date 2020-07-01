@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const weights = [ 5, 3, 2, 1, 0 ];
+const weights = [ 6, 5, 4, 3, 2, 1, 0 ];
 
 function WeightDropdown(props) {
 	const [ selection, setSelection ] = useState(0);
