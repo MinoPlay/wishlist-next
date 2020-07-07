@@ -11,6 +11,8 @@ GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
 ### Get all wishlists
 GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
 ###
+GET https://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+###
 GET http://localhost:7071/api/SyncWishlistAgainstBGG
 ###
 ### ADD

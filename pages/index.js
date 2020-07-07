@@ -7,8 +7,8 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const devMode = false;
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+// const baseUrl = 'http://localhost:7071/api';
+const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
 const columns2 = [
 	{
@@ -73,6 +73,7 @@ const TEXT_COLLAPSE_OPTIONS = {
 };
 
 export default function index(props) {
+	const devMode = false;
 	const [ gameSelections, setGameSelections ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
