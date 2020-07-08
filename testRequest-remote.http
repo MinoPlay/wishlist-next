@@ -1,0 +1,37 @@
+GET https://bgg-api.azurewebsites.net/api/GetWishlist
+###
+GET https://bgg-api.azurewebsites.net/api/GetMember?initials=MKUC
+### missing user
+GET http://bgg-api.azurewebsites.net/api/GetMember?initials=AAAAA
+###
+GET https://bgg-api.azurewebsites.net/api/GetAllMembers
+###
+### Test wishlist selection exists
+GET http://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=unknown
+### Get all wishlists
+GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
+###
+GET https://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+###
+GET http://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+###
+### ADD
+###
+GET http://bgg-api.azurewebsites.net/api/AddMember?initials=MKUC
+###
+GET http://bgg-api.azurewebsites.net/api/AddGame
+###
+GET http://bgg-api.azurewebsites.net/api/GetGame?gameId=421
+###
+### DELETE
+###
+GET http://bgg-api.azurewebsites.net/api/DeleteGame
+###
+GET http://bgg-api.azurewebsites.net/api/DeleteMember
+###
+GET http://bgg-api.azurewebsites.net/api/DeleteMemberWishlist
+
+### Add some sessions
+GET http://bgg-api.azurewebsites.net/api/AddVotingSession?sessionId=5
+###
+GET http://bgg-api.azurewebsites.net/api/GetAllVotingSessions

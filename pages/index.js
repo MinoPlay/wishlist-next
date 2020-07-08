@@ -170,7 +170,8 @@ export default function index(props) {
 }
 
 index.getInitialProps = async function() {
-	const response = await fetch(`${baseUrl}/GetWishlist`);
+	const response = await fetch(`https://bgg-api.azurewebsites.net/api/GetWishlist`);
 	const data = await response.json();
+	console.log('getInitialsProps is callled.');
 	return { games: data.map((entry) => entry) };
 };

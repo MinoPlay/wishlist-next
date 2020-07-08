@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
-import LoginDialog from '../components/LoginDialog';
+import LoginDialogAdmin from '../components/LoginDialogAdmin';
 import AddMember from '../components/adminView/Members/AddMember';
 import DeleteMember from '../components/adminView/Members/DeleteMember';
 import GetAllMembers from '../components/adminView/Members/GetAllMembers';
@@ -146,7 +146,7 @@ function adminWindow(props) {
 				</Nav>
 			</Navbar>
 
-			<LoginDialog
+			<LoginDialogAdmin
 				baseUrl={baseUrl}
 				show={showLoginDialog ? true : false}
 				setShow={() => setShowLoginDialog(false)}

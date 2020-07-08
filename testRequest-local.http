@@ -1,29 +1,23 @@
-GET https://bgg-api.azurewebsites.net/api/GetWishlist
+GET http://localhost:7071/api/GetWishlist
 ###
-GET http://localhost:7071/api/GetMember?initials=MKUC
-### missing user
-GET http://localhost:7071/api/GetMember?initials=AAAAA
+GET http://localhost:7071/api/AddMember?initials=MKUC
 ###
-GET https://bgg-api.azurewebsites.net/api/GetAllMembers
+GET http://localhost:7071/api/GetMember?initials=ENHE
+###
+GET http://localhost:7071/api/UpdateMember?initials=ENHE&role=1
+###
+GET http://localhost:7071/api/GetAllMembers
 ###
 ### Test wishlist selection exists
 GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
 ### Get all wishlists
-GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
-###
-GET https://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+GET http://localhost:7071/api/GetWishlistSelections
 ###
 GET http://localhost:7071/api/SyncWishlistAgainstBGG
-###
-### ADD
-###
-GET http://localhost:7071/api/AddMember?initials=MKUC
 ###
 GET http://localhost:7071/api/AddGame
 ###
 GET http://localhost:7071/api/GetGame?gameId=421
-###
-### DELETE
 ###
 GET http://localhost:7071/api/DeleteGame
 ###
