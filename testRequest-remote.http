@@ -4,6 +4,8 @@ GET https://bgg-api.azurewebsites.net/api/GetMember?initials=MKUC
 ### missing user
 GET http://bgg-api.azurewebsites.net/api/GetMember?initials=AAAAA
 ###
+GET http://bgg-api.azurewebsites.net/api/UpdateMember?initials=MKUC&role=1
+###
 GET https://bgg-api.azurewebsites.net/api/GetAllMembers
 ###
 ### Test wishlist selection exists

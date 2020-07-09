@@ -6,16 +6,18 @@ import Form from 'react-bootstrap/Form';
 import fetch from 'isomorphic-unfetch';
 
 async function ValidateLoginId(baseUrl, loginId, password) {
-	if (password !== 'Let me in please') {
+	var checkUrl = `${baseUrl}/CheckAccess?initials=${loginId}&pass=${password}`;
+	var checkPass = await fetch(checkUrl);
+	if (checkPass.status !== 200) {
 		return 404;
 	}
+
 	var buildUrl = `${baseUrl}/GetMember?initials=${loginId}`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	console.log(data);
-	const status = result.status;
 
-	if (status == 200) {
+	if (checkPass.status == 200 && result.status == 200) {
 		if (data.role === 1) {
 			return 200;
 		}

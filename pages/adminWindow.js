@@ -17,6 +17,7 @@ const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 
 function adminWindow(props) {
 	const devMode = false;
+	const [ enabled, enable ] = useState(false);
 	const [ games, setGames ] = useState([]);
 	const [ members, setMembers ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
@@ -71,88 +72,91 @@ function adminWindow(props) {
 				integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 				crossOrigin="anonymous"
 			/>
-			<Navbar bg="dark" variant="dark" expand="lg">
-				<Navbar.Brand href="#home">Oticon Board Games Club (Admin view)</Navbar.Brand>
-				<Nav className="mr-auto">
-					<NavDropdown title="Members" id="basic-nav-dropdown">
-						<NavDropdown.Item onClick={() => setShowAddMember(true)}>Add member</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item
-							onClick={() => {
-								setShowDeleteMember(true);
-								populateMembers();
-							}}
-						>
-							Delete member
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item
-							onClick={() => {
-								resetAllViews();
-								setShowAllMembers(true);
-								setShowAllMembersRefresh(true);
-							}}
-						>
-							Get all members
-						</NavDropdown.Item>
-					</NavDropdown>
+			{enabled ? (
+				<Navbar bg="dark" variant="dark" expand="lg">
+					<Navbar.Brand href="#home">Oticon Board Games Club (Admin view)</Navbar.Brand>
+					<Nav className="mr-auto">
+						<NavDropdown title="Members" id="basic-nav-dropdown">
+							<NavDropdown.Item onClick={() => setShowAddMember(true)}>Add member</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item
+								onClick={() => {
+									setShowDeleteMember(true);
+									populateMembers();
+								}}
+							>
+								Delete member
+							</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item
+								onClick={() => {
+									resetAllViews();
+									setShowAllMembers(true);
+									setShowAllMembersRefresh(true);
+								}}
+							>
+								Get all members
+							</NavDropdown.Item>
+						</NavDropdown>
 
-					<NavDropdown title="Wishlist" id="basic-nav-dropdown">
-						<NavDropdown.Item onClick={() => setShowAddWishlistEntry(true)}>Add game</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item
-							onClick={() => {
-								populateGames();
-								setShowDeleteWishlistEntry(true);
-							}}
-						>
-							Delete game
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item
-							onClick={() => {
-								resetAllViews();
-								setShowWishlistSelections(true);
-								setShowWishlistSelectionsRefresh(true);
-							}}
-						>
-							Wishlist Selections
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item onClick={() => alert('Not supported YET!')} disabled>
-							Sync with BGG
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item
-							onClick={() => {
-								resetAllViews();
-								populateGames();
-								setShowGetWishlistGameId(true);
-								setShowModifyWishlistEntryRefresh(true);
-							}}
-						>
-							Modify Game
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-					</NavDropdown>
-				</Nav>
-				<Nav>
-					<Button variant="outline-success" href="/">
-						Back to wishlist
-					</Button>
-					<Navbar.Text>
-						Logged in as: <a href="">{loginId}</a>
-					</Navbar.Text>
-				</Nav>
-			</Navbar>
-
+						<NavDropdown title="Wishlist" id="basic-nav-dropdown">
+							<NavDropdown.Item onClick={() => setShowAddWishlistEntry(true)}>Add game</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item
+								onClick={() => {
+									populateGames();
+									setShowDeleteWishlistEntry(true);
+								}}
+							>
+								Delete game
+							</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item
+								onClick={() => {
+									resetAllViews();
+									setShowWishlistSelections(true);
+									setShowWishlistSelectionsRefresh(true);
+								}}
+							>
+								Wishlist Selections
+							</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item onClick={() => alert('Not supported YET!')} disabled>
+								Sync with BGG
+							</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item
+								onClick={() => {
+									resetAllViews();
+									populateGames();
+									setShowGetWishlistGameId(true);
+									setShowModifyWishlistEntryRefresh(true);
+								}}
+							>
+								Modify Game
+							</NavDropdown.Item>
+							<NavDropdown.Divider />
+						</NavDropdown>
+					</Nav>
+					<Nav>
+						<Button variant="outline-success" href="/">
+							Back to wishlist
+						</Button>
+						<Navbar.Text>
+							Logged in as: <a href="">{loginId}</a>
+						</Navbar.Text>
+					</Nav>
+				</Navbar>
+			) : null}
 			<LoginDialogAdmin
 				baseUrl={baseUrl}
 				show={showLoginDialog ? true : false}
-				setShow={() => setShowLoginDialog(false)}
+				setShow={() => {
+					setShowLoginDialog(false);
+					enable(true);
+				}}
 				setLoginId={(x) => setLoginId(x)}
 			/>
-
 			<GetWishlistGameId
 				show={showGetWishlistGameId}
 				games={games}
@@ -161,7 +165,6 @@ function adminWindow(props) {
 				setGameId={(x) => setShowGameIdToModify(x)}
 				showModifyWishlistEntry={(x) => setShowModifyWishlistEntry(x)}
 			/>
-
 			{showModifyWishlistEntry ? (
 				<ModifyWishlistEntry
 					baseUrl={baseUrl}
@@ -170,7 +173,6 @@ function adminWindow(props) {
 					setRefresh={() => setShowModifyWishlistEntryRefresh(false)}
 				/>
 			) : null}
-
 			<AddMember
 				baseUrl={baseUrl}
 				show={showAddMember}
@@ -178,7 +180,6 @@ function adminWindow(props) {
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
 			/>
-
 			<DeleteMember
 				baseUrl={baseUrl}
 				members={members}
@@ -187,7 +188,6 @@ function adminWindow(props) {
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
 			/>
-
 			{showAllMembers ? (
 				<GetAllMembers
 					baseUrl={baseUrl}
@@ -195,7 +195,6 @@ function adminWindow(props) {
 					setRefresh={() => setShowAllMembersRefresh(false)}
 				/>
 			) : null}
-
 			<AddWishlistEntry
 				baseUrl={baseUrl}
 				show={showAddWishlistEntry}
@@ -203,7 +202,6 @@ function adminWindow(props) {
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
 			/>
-
 			<DeleteWishlistEntry
 				baseUrl={baseUrl}
 				show={showDeleteWishlistEntry}
@@ -212,7 +210,6 @@ function adminWindow(props) {
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
 			/>
-
 			{showWishlistSelections ? (
 				<GetWishlistSelections
 					baseUrl={baseUrl}
@@ -220,7 +217,6 @@ function adminWindow(props) {
 					setRefresh={() => setShowWishlistSelectionsRefresh(false)}
 				/>
 			) : null}
-
 			<SuccessSubmit
 				showSuccess={showSuccess}
 				setShowSuccess={() => setShowSuccess(false)}
