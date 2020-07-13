@@ -37,3 +37,9 @@ GET http://bgg-api.azurewebsites.net/api/DeleteMemberWishlist
 GET http://bgg-api.azurewebsites.net/api/AddVotingSession?sessionId=5
 ###
 GET http://bgg-api.azurewebsites.net/api/GetAllVotingSessions
+###
+GET https://boardgamegeek.com/xmlapi2/collection?username=WDHBoardGameClub&wishlistpriority=3
+###
+GET https://boardgamegeek.com/xmlapi2/thing?id=421&stats=1
+###
+GET https://boardgamegeek.com/xmlapi2/thing?id=421
