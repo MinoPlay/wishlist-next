@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const weights = [ 6, 5, 4, 3, 2, 1, 0 ];
 
 function WeightDropdown(props) {
-	const [ selection, setSelection ] = useState(0);
+	const [ selection, setSelection ] = useState(props.defaultSelection);
 
 	return (
 		<Dropdown>

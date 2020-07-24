@@ -9,7 +9,7 @@ GET http://localhost:7071/api/UpdateMember?initials=ENHE&role=1
 GET http://localhost:7071/api/GetAllMembers
 ###
 ### Test wishlist selection exists
-GET http://localhost:7071/api/WishlistSelectionExists?initials=unknown
+GET http://localhost:7071/api/WishlistSelectionExists?initials=MKUC
 ### Get all wishlists
 GET http://localhost:7071/api/GetWishlistSelections
 ###

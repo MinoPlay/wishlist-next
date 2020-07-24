@@ -11,13 +11,13 @@ import GetWishlistSelections from '../components/adminView/WishlistSelection/Get
 import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlistEntry';
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
+import fetch from 'isomorphic-unfetch';
 
-// const baseUrl = 'http://localhost:7071/api';
-const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+const devMode = true;
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 function adminWindow(props) {
-	const devMode = false;
-	const [ enabled, enable ] = useState(false);
+	const [ enabled, enable ] = useState(devMode ? true : false);
 	const [ games, setGames ] = useState([]);
 	const [ members, setMembers ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);

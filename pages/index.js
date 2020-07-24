@@ -7,10 +7,10 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-//const baseUrl = "http://localhost:7071/api";
-const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+const devMode = false;
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
-const columns2 = [
+const columns = [
 	{
 		dataField: 'Select',
 		text: 'Select',
@@ -78,22 +78,31 @@ const TEXT_COLLAPSE_OPTIONS = {
 	maxHeight: 250 // expanded to
 };
 
+async function FetchWishlistSelectionExists(baseUrl, memberId) {
+	var buildUrl = `${baseUrl}/WishlistSelectionExists?initials=${memberId}`;
+	const result = await fetch(buildUrl);
+	const data = await result.json();
+	console.log(data);
+	return data;
+}
+
 export default function index(props) {
-	const devMode = false;
 	const [ gameSelections, setGameSelections ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
+	const [ enabled, enable ] = useState(false);
 
 	//control the available selection for weight dropdowns
 	const [ availableDropdowns, setAvailableDropdowns ] = useState([ 6, 5, 4, 3, 2, 1, 0 ]);
 
 	function clearEverything() {
 		console.log('invoking clearEverything (for now do nothing, need to implement');
-		// document
-		//   .querySelectorAll("input[type=checkbox]")
-		//   .forEach(el => (el.checked = false));
-		// setSelectedGames([]);
-		// setSelectedGamesNames([]);
+	}
+
+	function GetDefaultSelection(gameId) {
+		var matchIndex = gameSelections.findIndex((gs) => gs.gameId == gameId);
+		var match = gameSelections[matchIndex];
+		return matchIndex === -1 ? 0 : match.weight;
 	}
 
 	let data = props.games.map((x) => ({
@@ -102,6 +111,7 @@ export default function index(props) {
 				availableDropdowns={availableDropdowns}
 				setAvailableDropdowns={setAvailableDropdowns}
 				onSelectSelection={(a) => onSelectSelection(x, a)}
+				defaultSelection={(y) => GetDefaultSelection(x.gameId)}
 			/>
 		),
 		Thumbnail: (
@@ -151,6 +161,30 @@ export default function index(props) {
 		}
 	}
 
+	function PrePopulateSelections(memberId) {
+		console.log('enter PrePopulateSelections');
+		FetchWishlistSelectionExists(baseUrl, memberId)
+			.then((response) =>
+				response.map((responseSelection) => {
+					console.log('response:');
+					console.log(responseSelection);
+					gameSelections.push({
+						gameId: responseSelection.gameSelection,
+						gameTitle: responseSelection.gameTitle,
+						weight: responseSelection.gameWeight
+					});
+					console.log('gameSelections:');
+					console.log(gameSelections);
+					setGameSelections(gameSelections);
+					availableDropdowns.splice(availableDropdowns.indexOf(responseSelection.gameWeight), 1);
+					console.log('availableDropdowns:');
+					console.log(availableDropdowns);
+					setAvailableDropdowns(availableDropdowns);
+				})
+			)
+			.then((x) => enable(true));
+	}
+
 	return (
 		<div>
 			<link
@@ -163,7 +197,10 @@ export default function index(props) {
 				baseUrl={baseUrl}
 				show={showLoginDialog ? true : false}
 				setShow={() => setShowLoginDialog(false)}
-				setLoginId={(x) => setLoginId(x)}
+				setLoginId={(x) => {
+					setLoginId(x);
+					PrePopulateSelections(x);
+				}}
 			/>
 			<Header
 				baseUrl={baseUrl}
@@ -171,7 +208,7 @@ export default function index(props) {
 				clearEverything={clearEverything}
 				loginId={loginId}
 			/>
-			<BootstrapTable keyField="id" data={data} columns={columns2} bordered={false} />
+			{enabled ? <BootstrapTable keyField="id" data={data} columns={columns} bordered={false} /> : null}
 		</div>
 	);
 }

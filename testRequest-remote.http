@@ -9,7 +9,7 @@ GET http://bgg-api.azurewebsites.net/api/UpdateMember?initials=MKUC&role=1
 GET https://bgg-api.azurewebsites.net/api/GetAllMembers
 ###
 ### Test wishlist selection exists
-GET http://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=unknown
+GET http://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=MKUC
 ### Get all wishlists
 GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
 ###
