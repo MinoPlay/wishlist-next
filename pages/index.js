@@ -19,12 +19,16 @@ const columns = [
 	{
 		dataField: 'Thumbnail',
 		text: '',
-		headerAlign: 'center'
+		headerAlign: 'center',
+		align: 'center'
 	},
 	{
 		dataField: 'Title',
 		text: 'Title',
 		sort: true,
+		headerStyle: () => {
+			return { width: '10%' };
+		},
 		headerAlign: 'center'
 	},
 	{
@@ -90,7 +94,7 @@ export default function index(props) {
 	const [ gameSelections, setGameSelections ] = useState([]);
 	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
 	const [ loginId, setLoginId ] = useState('unknown');
-	const [ enabled, enable ] = useState(false);
+	const [ enabled, enable ] = useState(devMode ? true : false);
 
 	//control the available selection for weight dropdowns
 	const [ availableDropdowns, setAvailableDropdowns ] = useState([ 6, 5, 4, 3, 2, 1, 0 ]);
