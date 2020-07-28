@@ -3,14 +3,14 @@ import React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const weights = [ 6, 5, 4, 3, 2, 1, 0 ];
+const weights = [ '6', '5', '4', '3', '2', '1', '0' ];
 
 function WeightDropdown(props) {
 	const [ selection, setSelection ] = useState(props.defaultSelection);
-
+	const [ variant, setVariant ] = useState(props.defaultVariant);
 	return (
 		<Dropdown>
-			<Dropdown.Toggle variant="success" id="dropdown-basic">
+			<Dropdown.Toggle variant={variant} id="dropdown-basic">
 				{selection}
 			</Dropdown.Toggle>
 
@@ -32,6 +32,9 @@ function WeightDropdown(props) {
 								if (x != 0) {
 									props.availableDropdowns.splice(props.availableDropdowns.indexOf(x), 1);
 									console.log(`props.availableDropdowns.includes(x): ${props.availableDropdowns}`);
+									setVariant('warning');
+								} else {
+									setVariant('success');
 								}
 								props.setAvailableDropdowns(props.availableDropdowns);
 								props.onSelectSelection(x);

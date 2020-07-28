@@ -97,7 +97,7 @@ export default function index(props) {
 	const [ enabled, enable ] = useState(devMode ? true : false);
 
 	//control the available selection for weight dropdowns
-	const [ availableDropdowns, setAvailableDropdowns ] = useState([ 6, 5, 4, 3, 2, 1, 0 ]);
+	const [ availableDropdowns, setAvailableDropdowns ] = useState([ '6', '5', '4', '3', '2', '1', '0' ]);
 
 	function clearEverything() {
 		console.log('invoking clearEverything (for now do nothing, need to implement');
@@ -109,6 +109,11 @@ export default function index(props) {
 		return matchIndex === -1 ? 0 : match.weight;
 	}
 
+	function GetDefaultVariant(gameId) {
+		var matchIndex = gameSelections.findIndex((gs) => gs.gameId == gameId);
+		return matchIndex === -1 ? 'success' : 'warning';
+	}
+
 	let data = props.games.map((x) => ({
 		Select: (
 			<WeightDropdown
@@ -116,6 +121,7 @@ export default function index(props) {
 				setAvailableDropdowns={setAvailableDropdowns}
 				onSelectSelection={(a) => onSelectSelection(x, a)}
 				defaultSelection={(y) => GetDefaultSelection(x.gameId)}
+				defaultVariant={() => GetDefaultVariant(x.gameId)}
 			/>
 		),
 		Thumbnail: (
@@ -138,7 +144,6 @@ export default function index(props) {
 	}));
 
 	function onSelectSelection(x, weight) {
-		console.log('enter onSelectSelection');
 		var matchIndex = gameSelections.findIndex((gs) => gs.gameId == x.gameId);
 		if (matchIndex != -1) {
 			gameSelections.splice(matchIndex, 1);
@@ -166,27 +171,24 @@ export default function index(props) {
 	}
 
 	function PrePopulateSelections(memberId) {
-		console.log('enter PrePopulateSelections');
 		FetchWishlistSelectionExists(baseUrl, memberId)
 			.then((response) =>
 				response.map((responseSelection) => {
-					console.log('response:');
-					console.log(responseSelection);
 					gameSelections.push({
 						gameId: responseSelection.gameSelection,
 						gameTitle: responseSelection.gameTitle,
 						weight: responseSelection.gameWeight
 					});
-					console.log('gameSelections:');
-					console.log(gameSelections);
+					console.log(`${responseSelection.gameTitle},${responseSelection.gameWeight}`);
 					setGameSelections(gameSelections);
-					availableDropdowns.splice(availableDropdowns.indexOf(responseSelection.gameWeight), 1);
-					console.log('availableDropdowns:');
-					console.log(availableDropdowns);
+					var indexToBeRemoved = availableDropdowns.indexOf(responseSelection.gameWeight);
+					availableDropdowns.splice(indexToBeRemoved, 1);
 					setAvailableDropdowns(availableDropdowns);
 				})
 			)
-			.then((x) => enable(true));
+			.then((x) => {
+				enable(true);
+			});
 	}
 
 	return (
