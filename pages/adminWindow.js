@@ -13,8 +13,8 @@ import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameI
 import SuccessSubmit from '../components/SuccessSubmit';
 import fetch from 'isomorphic-unfetch';
 
-const devMode = true;
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const devMode = false;
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
 
 function adminWindow(props) {
 	const [ enabled, enable ] = useState(devMode ? true : false);

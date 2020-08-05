@@ -8,7 +8,7 @@ import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
 const devMode = false;
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
 
 const columns = [
 	{
@@ -85,9 +85,14 @@ const TEXT_COLLAPSE_OPTIONS = {
 async function FetchWishlistSelectionExists(baseUrl, memberId) {
 	var buildUrl = `${baseUrl}/WishlistSelectionExists?initials=${memberId}`;
 	const result = await fetch(buildUrl);
-	const data = await result.json();
-	console.log(data);
-	return data;
+
+	if (result.status === 200) {
+		const data = await result.json();
+		console.log(data);
+		return data;
+	} else {
+		return [];
+	}
 }
 
 export default function index(props) {

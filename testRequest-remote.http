@@ -1,42 +1,44 @@
-GET https://bgg-api.azurewebsites.net/api/GetWishlist
+GET https://bgg-api-test.azurewebsites.net/api/GetWishlist
 ###
-GET https://bgg-api.azurewebsites.net/api/GetMember?initials=MKUC
+GET https://bgg-api-test.azurewebsites.net/api/GetMember?initials=MKUC
 ### missing user
-GET http://bgg-api.azurewebsites.net/api/GetMember?initials=AAAAA
+GET http://bgg-api-test.azurewebsites.net/api/GetMember?initials=AAAAA
 ###
-GET http://bgg-api.azurewebsites.net/api/UpdateMember?initials=MKUC&role=1
+GET http://bgg-api-test.azurewebsites.net/api/UpdateMember?initials=MKUC&role=1
 ###
-GET https://bgg-api.azurewebsites.net/api/GetAllMembers
+GET https://bgg-api-test.azurewebsites.net/api/GetAllMembers
 ###
 ### Test wishlist selection exists
-GET http://bgg-api.azurewebsites.net/api/WishlistSelectionExists?initials=MKUC
+GET http://bgg-api-test.azurewebsites.net/api/WishlistSelectionExists?initials=MKUC
 ### Get all wishlists
-GET https://bgg-api.azurewebsites.net/api/GetWishlistSelections
+GET https://bgg-api-test.azurewebsites.net/api/GetWishlistSelections
 ###
-GET https://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+GET https://bgg-api-test.azurewebsites.net/api/SyncWishlistAgainstBGG
 ###
-GET http://bgg-api.azurewebsites.net/api/SyncWishlistAgainstBGG
+GET http://bgg-api-test.azurewebsites.net/api/SyncWishlistAgainstBGG
 ###
 ### ADD
 ###
-GET http://bgg-api.azurewebsites.net/api/AddMember?initials=MKUC
+GET http://bgg-api-test.azurewebsites.net/api/AddMember?initials=MKUC
 ###
-GET http://bgg-api.azurewebsites.net/api/AddGame
+GET http://bgg-api-test.azurewebsites.net/api/AddGame
 ###
-GET http://bgg-api.azurewebsites.net/api/GetGame?gameId=421
+GET http://bgg-api-test.azurewebsites.net/api/GetGame?gameId=421
 ###
 ### DELETE
 ###
-GET http://bgg-api.azurewebsites.net/api/DeleteGame
+GET http://bgg-api-test.azurewebsites.net/api/DeleteGame
 ###
-GET http://bgg-api.azurewebsites.net/api/DeleteMember
+GET http://bgg-api-test.azurewebsites.net/api/DeleteMember
 ###
-GET http://bgg-api.azurewebsites.net/api/DeleteMemberWishlist
+GET http://bgg-api-test.azurewebsites.net/api/DeleteMemberWishlist
 
 ### Add some sessions
-GET http://bgg-api.azurewebsites.net/api/AddVotingSession?sessionId=5
+GET http://bgg-api-test.azurewebsites.net/api/AddVotingSession?sessionId=5
 ###
-GET http://bgg-api.azurewebsites.net/api/GetAllVotingSessions
+GET http://bgg-api-test.azurewebsites.net/api/GetAllVotingSessions
+###
+GET http://bgg-api-test.azurewebsites.net/api/GetVotingSession?sessionId=1713242007
 ###
 GET https://boardgamegeek.com/xmlapi2/collection?username=WDHBoardGameClub&wishlistpriority=3
 ###
