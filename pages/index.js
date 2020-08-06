@@ -224,8 +224,31 @@ export default function index(props) {
 	);
 }
 
-index.getInitialProps = async function() {
-	const response = await fetch(`${baseUrl}/GetWishlist`);
+async function GetGameIdsFromVotingSession() {
+	const response = await fetch(`${baseUrl}/GetVotingSessionEntries?votingSessionId=1713242007`);
 	const data = await response.json();
-	return { games: data.map((entry) => entry) };
+	return data.map((entry) => entry.gameId);
+}
+
+async function GetGameData(gameId) {
+	var response = await fetch(`${baseUrl}/GetGame?gameId=${gameId}`);
+	var data = await response.json();
+
+	return data;
+}
+
+index.getInitialProps = async function() {
+	const gameIds = await GetGameIdsFromVotingSession();
+
+	var promises = gameIds.map(async function(gameId) {
+		const results = await GetGameData(gameId);
+		return results;
+	});
+
+	var result = Promise.all(promises).then((x) => {
+		return {
+			games: x
+		};
+	});
+	return result;
 };
