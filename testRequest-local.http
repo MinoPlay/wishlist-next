@@ -26,12 +26,14 @@ GET http://localhost:7071/api/DeleteMember
 GET http://localhost:7071/api/DeleteMemberWishlist
 
 ### Add some sessions
-GET http://localhost:7071/api/AddVotingSession?sessionId=24894979
+GET http://localhost:7071/api/AddVotingSession?sessionId=1801820636
 ###
-GET http://localhost:7071/api/GetVotingSessionEntries?votingSessionId=24894979
+GET http://localhost:7071/api/GetVotingSessionEntries?votingSessionId=1801820636
 ###
-GET http://localhost:7071/api/UpdateVotingSessionEntry?votingSessionId=24894979
+GET http://localhost:7071/api/UpdateVotingSessionEntry?votingSessionId=1801820636
 ###
 GET http://localhost:7071/api/UpdateVotingSession?sessionId=1801820636&active=true
+###
+GET http://localhost:7071/api/GetAllVotingSessions
 ###
 GET http://localhost:7071/api/GetVotingSession?sessionId=active

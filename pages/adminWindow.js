@@ -11,10 +11,19 @@ import GetWishlistSelections from '../components/adminView/WishlistSelection/Get
 import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlistEntry';
 import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
+import GetVotingSession from '../components/adminView/VotingSession/GetVotingSession';
+import SelectVotingSession from '../components/adminView/VotingSession/SelectVotingSession';
 import fetch from 'isomorphic-unfetch';
 
 const devMode = true;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
+
+async function FetchAllVotingSessions(baseUrl) {
+	var buildUrl = `${baseUrl}/GetAllVotingSessions`;
+	const result = await fetch(buildUrl);
+	const data = await result.json();
+	return data.map((x) => x.sessionId);
+}
 
 function adminWindow(props) {
 	const [ enabled, enable ] = useState(devMode ? true : false);
@@ -42,6 +51,10 @@ function adminWindow(props) {
 	const [ showSuccess, setShowSuccess ] = useState(false);
 	const [ successMessage, setSuccessMessage ] = useState('');
 
+	const [ votingSessions, setVotingSessions ] = useState([]);
+	const [ showVotingSessions, setShowVotingSessions ] = useState(false);
+	const [ currentVotingSession, setCurrentVotingSession ] = useState('');
+
 	function resetAllViews() {
 		setShowAllMembers(false);
 		setShowWishlistSelections(false);
@@ -62,6 +75,12 @@ function adminWindow(props) {
 		console.log('populating members...');
 		console.log(props.members);
 		setMembers(props.members);
+	}
+
+	function populateVotingSessions() {
+		console.log('populating votingSessions...');
+		console.log(props.votingSessions);
+		setVotingSessions(props.votingSessions);
 	}
 
 	return (
@@ -139,13 +158,20 @@ function adminWindow(props) {
 						</NavDropdown>
 
 						<NavDropdown title="Voting Session" id="basic-nav-dropdown">
-							<NavDropdown.Item>Add session</NavDropdown.Item>
+							<NavDropdown.Item>Create session</NavDropdown.Item>
 							<NavDropdown.Divider />
 							<NavDropdown.Item>Delete session</NavDropdown.Item>
 							<NavDropdown.Divider />
 							<NavDropdown.Item>Voting sessions</NavDropdown.Item>
 							<NavDropdown.Divider />
-							<NavDropdown.Item>Modify session</NavDropdown.Item>
+							<NavDropdown.Item
+								onClick={() => {
+									setShowVotingSessions(true);
+									populateVotingSessions();
+								}}
+							>
+								Modify session
+							</NavDropdown.Item>
 							<NavDropdown.Divider />
 						</NavDropdown>
 					</Nav>
@@ -233,6 +259,20 @@ function adminWindow(props) {
 				setShowSuccess={() => setShowSuccess(false)}
 				message={successMessage}
 			/>
+
+			<GetVotingSession
+				baseUrl={baseUrl}
+				currentVotingSession={currentVotingSession}
+				// refresh={showWishlistSelectionsRefresh}
+				// setRefresh={() => setShowWishlistSelectionsRefresh(false)}
+			/>
+			<SelectVotingSession
+				baseUrl={baseUrl}
+				members={members}
+				show={showVotingSessions}
+				setShow={(x) => setShowVotingSessions(x)}
+				setCurrentVotingSession={(x) => setCurrentVotingSession(x)}
+			/>
 		</div>
 	);
 }
@@ -242,7 +282,14 @@ adminWindow.getInitialProps = async function() {
 	const data = await response.json();
 	const response2 = await fetch(`${baseUrl}/GetAllMembers`);
 	const data2 = await response2.json();
-	return { games: data.map((entry) => entry), members: data2.map((entry) => entry.initials) };
+
+	const fetchedVotingSessions = await FetchAllVotingSessions(baseUrl);
+
+	return {
+		games: data.map((entry) => entry),
+		members: data2.map((entry) => entry.initials),
+		votingSessions: fetchedVotingSessions
+	};
 };
 
 export default adminWindow;
