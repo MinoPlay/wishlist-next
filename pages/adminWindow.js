@@ -13,7 +13,7 @@ import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameI
 import SuccessSubmit from '../components/SuccessSubmit';
 import fetch from 'isomorphic-unfetch';
 
-const devMode = false;
+const devMode = true;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
 
 function adminWindow(props) {
@@ -135,6 +135,17 @@ function adminWindow(props) {
 							>
 								Modify Game
 							</NavDropdown.Item>
+							<NavDropdown.Divider />
+						</NavDropdown>
+
+						<NavDropdown title="Voting Session" id="basic-nav-dropdown">
+							<NavDropdown.Item>Add session</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item>Delete session</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item>Voting sessions</NavDropdown.Item>
+							<NavDropdown.Divider />
+							<NavDropdown.Item>Modify session</NavDropdown.Item>
 							<NavDropdown.Divider />
 						</NavDropdown>
 					</Nav>

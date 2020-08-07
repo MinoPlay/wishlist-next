@@ -7,7 +7,7 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const devMode = false;
+const devMode = true;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
 
 const columns = [
@@ -225,7 +225,13 @@ export default function index(props) {
 }
 
 async function GetGameIdsFromVotingSession() {
-	const response = await fetch(`${baseUrl}/GetVotingSessionEntries?votingSessionId=1713242007`);
+	const getActiveSession = await fetch(`${baseUrl}/GetVotingSession?sessionId=active`);
+	if (getActiveSession.status !== 200) {
+		console.log('returning null');
+		return [];
+	}
+	const activeSession = await getActiveSession.json();
+	const response = await fetch(`${baseUrl}/GetVotingSessionEntries?votingSessionId=${activeSession.sessionId}`);
 	const data = await response.json();
 	return data.map((entry) => entry.gameId);
 }
