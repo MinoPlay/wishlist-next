@@ -18,6 +18,7 @@ function SelectVotingSession(props) {
 						<Form.Group controlId="formBasicId">
 							<Form.Control as="select" onChange={(e) => setCurrentSession(e.target.value)}>
 								{props.votingSessions.map((g) => {
+									console.log(g);
 									return <option>{g}</option>;
 								})}
 							</Form.Control>
@@ -27,7 +28,11 @@ function SelectVotingSession(props) {
 				<Modal.Footer>
 					<Button
 						variant="primary"
-						onClick={(x) => props.setCurrentVotingSession(currentSession)}
+						onClick={(x) => {
+							props.setCurrentVotingSession(currentSession);
+							props.setShow(false);
+						}
+					}
 						disabled={currentSession === '' ? 'disabled' : ''}
 					>
 						Select

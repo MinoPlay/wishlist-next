@@ -55,10 +55,14 @@ function adminWindow(props) {
 	const [ showVotingSessions, setShowVotingSessions ] = useState(false);
 	const [ currentVotingSession, setCurrentVotingSession ] = useState('');
 
+	const [ showVotingSession, setShowVotingSession ] = useState(false);
+	const [ refreshVotingSession, setRefreshVotingSession ] = useState(true);
+
 	function resetAllViews() {
 		setShowAllMembers(false);
 		setShowWishlistSelections(false);
 		setShowModifyWishlistEntry(false);
+		setShowVotingSession(false);
 	}
 
 	function populateGames() {
@@ -260,18 +264,23 @@ function adminWindow(props) {
 				message={successMessage}
 			/>
 
-			<GetVotingSession
+			{showVotingSession ? <GetVotingSession
 				baseUrl={baseUrl}
 				currentVotingSession={currentVotingSession}
-				// refresh={showWishlistSelectionsRefresh}
-				// setRefresh={() => setShowWishlistSelectionsRefresh(false)}
-			/>
+				refresh={refreshVotingSession}
+				setRefresh={() => setRefreshVotingSession(false)}
+			/> : null }
+
 			<SelectVotingSession
 				baseUrl={baseUrl}
-				members={members}
+				votingSessions={votingSessions}
 				show={showVotingSessions}
 				setShow={(x) => setShowVotingSessions(x)}
-				setCurrentVotingSession={(x) => setCurrentVotingSession(x)}
+				setCurrentVotingSession={(x) => {
+					setCurrentVotingSession(x);
+					setRefreshVotingSession(true);
+					setShowVotingSession(true);
+				}}
 			/>
 		</div>
 	);

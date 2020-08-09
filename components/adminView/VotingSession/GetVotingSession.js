@@ -42,7 +42,7 @@ function GetVotingSession(props) {
 	const [ votingSessionEntries, setVotingSessionEntries ] = useState([]);
 
 	if (props.refresh) {
-		FetchVotingSessionEntries(props.baseUrl, props.selectedVotingSession).then((fetchResponse) => {
+		FetchVotingSessionEntries(props.baseUrl, props.currentVotingSession).then((fetchResponse) => {
 			const res = fetchResponse.map((vse) => ({
 				VotingSessionId: vse.votingSessionEntryId,
 				VotingSessionEntryId: vse.votingSessionId,
