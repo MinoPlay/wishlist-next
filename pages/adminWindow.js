@@ -2,18 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import LoginDialogAdmin from '../components/LoginDialogAdmin';
-import AddMember from '../components/adminView/Members/AddMember';
-import DeleteMember from '../components/adminView/Members/DeleteMember';
-import GetAllMembers from '../components/adminView/Members/GetAllMembers';
-import AddWishlistEntry from '../components/adminView/Wishlist/AddWishlistEntry';
-import DeleteWishlistEntry from '../components/adminView/Wishlist/DeleteWishlistEntry';
-import GetWishlistSelections from '../components/adminView/WishlistSelection/GetWishlistSelections';
-import ModifyWishlistEntry from '../components/adminView/Wishlist/ModifyWishlistEntry';
-import GetWishlistGameId from '../components/adminView/Wishlist/GetWishlistGameId';
 import SuccessSubmit from '../components/SuccessSubmit';
 import GetVotingSession from '../components/adminView/VotingSession/GetVotingSession';
 import SelectVotingSession from '../components/adminView/VotingSession/SelectVotingSession';
 import fetch from 'isomorphic-unfetch';
+import MemberTab from '../components/adminView/Tabs/MembersTab';
+import MembersTabResult from '../components/adminView/TabsResults/MembersTabResult';
+import WishlistTab from '../components/adminView/Tabs/WishlistTab';
+import WishlistTabResult from '../components/adminView/TabsResults/WishlistTabResult';
 
 const devMode = true;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
@@ -65,22 +61,6 @@ function adminWindow(props) {
 		setShowVotingSession(false);
 	}
 
-	function populateGames() {
-		console.log('populating games...');
-		const getGamesIds = props.games.map((x) => ({
-			gameTitle: x.gameTitle,
-			gameId: x.gameId
-		}));
-		console.log(getGamesIds);
-		setGames(getGamesIds);
-	}
-
-	function populateMembers() {
-		console.log('populating members...');
-		console.log(props.members);
-		setMembers(props.members);
-	}
-
 	function populateVotingSessions() {
 		console.log('populating votingSessions...');
 		console.log(props.votingSessions);
@@ -99,67 +79,27 @@ function adminWindow(props) {
 				<Navbar bg="dark" variant="dark" expand="lg">
 					<Navbar.Brand href="#home">Oticon Board Games Club (Admin view)</Navbar.Brand>
 					<Nav className="mr-auto">
-						<NavDropdown title="Members" id="basic-nav-dropdown">
-							<NavDropdown.Item onClick={() => setShowAddMember(true)}>Add member</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item
-								onClick={() => {
-									setShowDeleteMember(true);
-									populateMembers();
-								}}
-							>
-								Delete member
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item
-								onClick={() => {
-									resetAllViews();
-									setShowAllMembers(true);
-									setShowAllMembersRefresh(true);
-								}}
-							>
-								Get all members
-							</NavDropdown.Item>
-						</NavDropdown>
+						<MemberTab
+							members={props.members}
+							setMembers={(x) => setMembers(x)}
+							setShowAddMember={() => setShowAddMember(true)}
+							setShowDeleteMember={() => setShowDeleteMember(true)}
+							resetAllViews={() => resetAllViews()}
+							setShowAllMembers={() => setShowAllMembers(true)}
+							setShowAllMembersRefresh={() => setShowAllMembersRefresh(true)}
+						/>
 
-						<NavDropdown title="Wishlist" id="basic-nav-dropdown">
-							<NavDropdown.Item onClick={() => setShowAddWishlistEntry(true)}>Add game</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item
-								onClick={() => {
-									populateGames();
-									setShowDeleteWishlistEntry(true);
-								}}
-							>
-								Delete game
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item
-								onClick={() => {
-									resetAllViews();
-									setShowWishlistSelections(true);
-									setShowWishlistSelectionsRefresh(true);
-								}}
-							>
-								Wishlist Selections
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item onClick={() => alert('Not supported YET!')} disabled>
-								Sync with BGG
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item
-								onClick={() => {
-									resetAllViews();
-									populateGames();
-									setShowGetWishlistGameId(true);
-									setShowModifyWishlistEntryRefresh(true);
-								}}
-							>
-								Modify Game
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-						</NavDropdown>
+						<WishlistTab
+							games={props.games}
+							setGames={(x) => setGames(x)}
+							setShowAddWishlistEntry={() => setShowAddWishlistEntry(true)}
+							setShowDeleteWishlistEntry={() => setShowDeleteWishlistEntry(true)}
+							resetAllViews={() => resetAllViews()}
+							setShowWishlistSelections={() => setShowWishlistSelections(true)}
+							setShowWishlistSelectionsRefresh={() => setShowWishlistSelectionsRefresh(true)}
+							setShowGetWishlistGameId={() => setShowGetWishlistGameId(true)}
+							setShowModifyWishlistEntryRefresh={() => setShowModifyWishlistEntryRefresh(true)}
+						/>
 
 						<NavDropdown title="Voting Session" id="basic-nav-dropdown">
 							<NavDropdown.Item>Create session</NavDropdown.Item>
@@ -198,78 +138,57 @@ function adminWindow(props) {
 				}}
 				setLoginId={(x) => setLoginId(x)}
 			/>
-			<GetWishlistGameId
-				show={showGetWishlistGameId}
-				games={games}
-				setShow={(x) => setShowGetWishlistGameId(x)}
-				gameId={showGameIdToModify}
-				setGameId={(x) => setShowGameIdToModify(x)}
-				showModifyWishlistEntry={(x) => setShowModifyWishlistEntry(x)}
-			/>
-			{showModifyWishlistEntry ? (
-				<ModifyWishlistEntry
-					baseUrl={baseUrl}
-					gameId={showGameIdToModify}
-					refresh={showModifyWishlistEntryRefresh}
-					setRefresh={() => setShowModifyWishlistEntryRefresh(false)}
-				/>
-			) : null}
-			<AddMember
+
+			<MembersTabResult
 				baseUrl={baseUrl}
-				show={showAddMember}
-				setShow={(x) => setShowAddMember(x)}
-				success={(x) => setShowSuccess(x)}
-				successMessage={(x) => setSuccessMessage(x)}
+				showAddMember={showAddMember}
+				setShowAddMember={(x) => setShowAddMember(x)}
+				setShowSuccess={(x) => setShowSuccess(x)}
+				setSuccessMessage={(x) => setSuccessMessage(x)}
+				members={props.members}
+				showDeleteMember={showDeleteMember}
+				setShowDeleteMember={(x) => setShowDeleteMember(x)}
+				showAllMembers={showAllMembers}
+				showAllMembersRefresh={showAllMembersRefresh}
+				setShowAllMembersRefresh={() => setShowAllMembersRefresh(false)}
 			/>
-			<DeleteMember
+
+			<WishlistTabResult
+				showGetWishlistGameId={showGetWishlistGameId}
+				games={props.games}
+				setShowGetWishlistGameId={(x) => setShowGetWishlistGameId(x)}
+				showGameIdToModify={showGameIdToModify}
+				setShowGameIdToModify={(x) => setShowGameIdToModify(x)}
+				setShowModifyWishlistEntry={(x) => setShowModifyWishlistEntry(x)}
+				showModifyWishlistEntry={showModifyWishlistEntry}
 				baseUrl={baseUrl}
-				members={members}
-				show={showDeleteMember}
-				setShow={(x) => setShowDeleteMember(x)}
-				success={(x) => setShowSuccess(x)}
-				successMessage={(x) => setSuccessMessage(x)}
+				showModifyWishlistEntryRefresh={showModifyWishlistEntryRefresh}
+				setShowModifyWishlistEntryRefresh={() => setShowModifyWishlistEntryRefresh(false)}
+				showAddWishlistEntry={showAddWishlistEntry}
+				setShowAddWishlistEntry={(x) => setShowAddWishlistEntry(x)}
+				setShowSuccess={(x) => setShowSuccess(x)}
+				setSuccessMessage={(x) => setSuccessMessage(x)}
+				showDeleteWishlistEntry={showDeleteWishlistEntry}
+				setShowDeleteWishlistEntry={(x) => setShowDeleteWishlistEntry(x)}
+				showWishlistSelections={showWishlistSelections}
+				showWishlistSelectionsRefresh={showWishlistSelectionsRefresh}
+				setShowWishlistSelectionsRefresh={() => setShowWishlistSelectionsRefresh(false)}
 			/>
-			{showAllMembers ? (
-				<GetAllMembers
-					baseUrl={baseUrl}
-					refresh={showAllMembersRefresh}
-					setRefresh={() => setShowAllMembersRefresh(false)}
-				/>
-			) : null}
-			<AddWishlistEntry
-				baseUrl={baseUrl}
-				show={showAddWishlistEntry}
-				setShow={(x) => setShowAddWishlistEntry(x)}
-				success={(x) => setShowSuccess(x)}
-				successMessage={(x) => setSuccessMessage(x)}
-			/>
-			<DeleteWishlistEntry
-				baseUrl={baseUrl}
-				show={showDeleteWishlistEntry}
-				games={games}
-				setShow={(x) => setShowDeleteWishlistEntry(x)}
-				success={(x) => setShowSuccess(x)}
-				successMessage={(x) => setSuccessMessage(x)}
-			/>
-			{showWishlistSelections ? (
-				<GetWishlistSelections
-					baseUrl={baseUrl}
-					refresh={showWishlistSelectionsRefresh}
-					setRefresh={() => setShowWishlistSelectionsRefresh(false)}
-				/>
-			) : null}
+
 			<SuccessSubmit
 				showSuccess={showSuccess}
 				setShowSuccess={() => setShowSuccess(false)}
 				message={successMessage}
 			/>
 
-			{showVotingSession ? <GetVotingSession
-				baseUrl={baseUrl}
-				currentVotingSession={currentVotingSession}
-				refresh={refreshVotingSession}
-				setRefresh={() => setRefreshVotingSession(false)}
-			/> : null }
+			{showVotingSession ? (
+				<GetVotingSession
+					baseUrl={baseUrl}
+					currentVotingSession={currentVotingSession}
+					refresh={refreshVotingSession}
+					setRefresh={() => setRefreshVotingSession(false)}
+				/>
+			) : null}
 
 			<SelectVotingSession
 				baseUrl={baseUrl}

@@ -32,7 +32,7 @@ GET http://localhost:7071/api/GetVotingSessionEntries?votingSessionId=1801820636
 ###
 GET http://localhost:7071/api/UpdateVotingSessionEntry?votingSessionId=1801820636
 ###
-GET http://localhost:7071/api/UpdateVotingSession?sessionId=1801820636&active=true
+GET http://localhost:7071/api/ActivateVotingSession?sessionId=10
 ###
 GET http://localhost:7071/api/GetAllVotingSessions
 ###
