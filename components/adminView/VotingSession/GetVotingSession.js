@@ -1,14 +1,21 @@
 import { useState } from 'react';
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
+import Button from 'react-bootstrap/Button';
 import BootstrapTable from 'react-bootstrap-table-next';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 async function FetchVotingSessionEntries(baseUrl, sessionId) {
 	var buildUrl = `${baseUrl}/GetVotingSessionEntries?votingSessionId=${sessionId}`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	return data;
+}
+
+async function DeleteVotingSessionEntry(baseUrl, sessionEntryId) {
+	var buildUrl = `${baseUrl}/DeleteVotingSessionEntry?votingSessionId=${sessionEntryId}`;
+	const result = await fetch(buildUrl);
+	console.log(result);
+	return result.status;
 }
 
 const columns = [
@@ -35,6 +42,12 @@ const columns = [
 		text: 'Game Title',
 		sort: true,
 		headerAlign: 'center'
+	},
+	{
+		dataField: 'Remove',
+		text: 'Remove',
+		sort: true,
+		headerAlign: 'center'
 	}
 ];
 
@@ -47,11 +60,22 @@ function GetVotingSession(props) {
 				VotingSessionId: vse.votingSessionEntryId,
 				VotingSessionEntryId: vse.votingSessionId,
 				GameId: vse.gameId,
-				GameTitle: vse.gameTitle
+				GameTitle: vse.gameTitle,
+				Remove: (
+					<Button
+						variant="danger"
+						onClick={() => {
+							DeleteVotingSessionEntry(props.baseUrl, vse.votingSessionEntryId);
+							props.setRefresh(true);
+						}}
+					>
+						Remove
+					</Button>
+				)
 			}));
 			setVotingSessionEntries(res);
 		});
-		props.setRefresh();
+		props.setRefresh(false);
 	}
 
 	return (

@@ -197,7 +197,7 @@ function adminWindow(props) {
 					baseUrl={baseUrl}
 					currentVotingSession={currentVotingSession}
 					refresh={refreshVotingSession}
-					setRefresh={() => setRefreshVotingSession(false)}
+					setRefresh={(x) => setRefreshVotingSession(x)}
 				/>
 			) : null}
 
