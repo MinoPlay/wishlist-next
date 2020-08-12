@@ -60,6 +60,17 @@ function adminWindow(props) {
 		setShowModifyWishlistEntry(false);
 		setShowVotingSession(false);
 	}
+	function populateMembers() {
+		setMembers(props.members);
+	}
+	function populateGames() {
+		const getGamesIds = props.games.map((x) => ({
+			gameTitle: x.gameTitle,
+			gameId: x.gameId
+		}));
+
+		setGames(getGamesIds);
+	}
 
 	function populateVotingSessions() {
 		console.log('populating votingSessions...');
@@ -80,7 +91,7 @@ function adminWindow(props) {
 					<Navbar.Brand href="#home">Oticon Board Games Club (Admin view)</Navbar.Brand>
 					<Nav className="mr-auto">
 						<MemberTab
-							members={props.members}
+							populateMembers={() => populateMembers()}
 							setMembers={(x) => setMembers(x)}
 							setShowAddMember={() => setShowAddMember(true)}
 							setShowDeleteMember={() => setShowDeleteMember(true)}
@@ -90,7 +101,7 @@ function adminWindow(props) {
 						/>
 
 						<WishlistTab
-							games={props.games}
+							populateGames={() => populateGames()}
 							setGames={(x) => setGames(x)}
 							setShowAddWishlistEntry={() => setShowAddWishlistEntry(true)}
 							setShowDeleteWishlistEntry={() => setShowDeleteWishlistEntry(true)}
@@ -145,7 +156,7 @@ function adminWindow(props) {
 				setShowAddMember={(x) => setShowAddMember(x)}
 				setShowSuccess={(x) => setShowSuccess(x)}
 				setSuccessMessage={(x) => setSuccessMessage(x)}
-				members={props.members}
+				members={members}
 				showDeleteMember={showDeleteMember}
 				setShowDeleteMember={(x) => setShowDeleteMember(x)}
 				showAllMembers={showAllMembers}
@@ -155,7 +166,7 @@ function adminWindow(props) {
 
 			<WishlistTabResult
 				showGetWishlistGameId={showGetWishlistGameId}
-				games={props.games}
+				games={games}
 				setShowGetWishlistGameId={(x) => setShowGetWishlistGameId(x)}
 				showGameIdToModify={showGameIdToModify}
 				setShowGameIdToModify={(x) => setShowGameIdToModify(x)}
@@ -197,6 +208,7 @@ function adminWindow(props) {
 				setShow={(x) => setShowVotingSessions(x)}
 				setCurrentVotingSession={(x) => {
 					setCurrentVotingSession(x);
+					resetAllViews();
 					setRefreshVotingSession(true);
 					setShowVotingSession(true);
 				}}

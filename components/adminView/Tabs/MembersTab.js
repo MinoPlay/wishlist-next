@@ -2,10 +2,6 @@ import React from 'react';
 import { NavDropdown } from 'react-bootstrap';
 
 export default function MembersTab(props) {
-	function populateMembers() {
-		props.setMembers(props.members);
-	}
-
 	return (
 		<div>
 			<NavDropdown title="Members" id="basic-nav-dropdown">
@@ -14,7 +10,7 @@ export default function MembersTab(props) {
 				<NavDropdown.Item
 					onClick={() => {
 						props.setShowDeleteMember();
-						populateMembers();
+						props.populateMembers();
 					}}
 				>
 					Delete member

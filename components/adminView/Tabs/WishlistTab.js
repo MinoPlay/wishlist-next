@@ -2,14 +2,6 @@ import React from 'react';
 import { NavDropdown } from 'react-bootstrap';
 
 export default function WishlistTab(props) {
-	function populateGames() {
-		const getGamesIds = props.games.map((x) => ({
-			gameTitle: x.gameTitle,
-			gameId: x.gameId
-		}));
-
-		props.setGames(getGamesIds);
-	}
 	return (
 		<div>
 			<NavDropdown title="Wishlist" id="basic-nav-dropdown">
@@ -17,7 +9,7 @@ export default function WishlistTab(props) {
 				<NavDropdown.Divider />
 				<NavDropdown.Item
 					onClick={() => {
-						populateGames();
+						props.populateGames();
 						props.setShowDeleteWishlistEntry();
 					}}
 				>
@@ -41,7 +33,7 @@ export default function WishlistTab(props) {
 				<NavDropdown.Item
 					onClick={() => {
 						props.resetAllViews();
-						populateGames();
+						props.populateGames();
 						props.setShowGetWishlistGameId();
 						props.setShowModifyWishlistEntryRefresh();
 					}}
