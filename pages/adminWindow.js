@@ -122,6 +122,7 @@ function adminWindow(props) {
 							<NavDropdown.Item
 								onClick={() => {
 									setShowVotingSessions(true);
+									populateGames();
 									populateVotingSessions();
 								}}
 							>
@@ -195,6 +196,7 @@ function adminWindow(props) {
 			{showVotingSession ? (
 				<GetVotingSession
 					baseUrl={baseUrl}
+					games={games}
 					currentVotingSession={currentVotingSession}
 					refresh={refreshVotingSession}
 					setRefresh={(x) => setRefreshVotingSession(x)}
