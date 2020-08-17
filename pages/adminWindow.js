@@ -10,8 +10,9 @@ import MemberTab from '../components/adminView/Tabs/MembersTab';
 import MembersTabResult from '../components/adminView/TabsResults/MembersTabResult';
 import WishlistTab from '../components/adminView/Tabs/WishlistTab';
 import WishlistTabResult from '../components/adminView/TabsResults/WishlistTabResult';
+import AddVotingSession from '../components/adminView/VotingSession/AddVotingSession';
 
-const devMode = true;
+const devMode = false;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
 
 async function FetchAllVotingSessions(baseUrl) {
@@ -47,6 +48,8 @@ function adminWindow(props) {
 	const [ showSuccess, setShowSuccess ] = useState(false);
 	const [ successMessage, setSuccessMessage ] = useState('');
 
+	const [ showAddVotingSession, setShowAddVotingSession ] = useState(false);
+
 	const [ votingSessions, setVotingSessions ] = useState([]);
 	const [ showVotingSessions, setShowVotingSessions ] = useState(false);
 	const [ currentVotingSession, setCurrentVotingSession ] = useState('');
@@ -60,11 +63,17 @@ function adminWindow(props) {
 		setShowModifyWishlistEntry(false);
 		setShowVotingSession(false);
 	}
-	function populateMembers() {
-		setMembers(props.members);
+
+	async function populateMembers() {
+		const response2 = await fetch(`${baseUrl}/GetAllMembers`);
+		const data2 = await response2.json();
+		setMembers(data2.map((entry) => entry.initials));
 	}
-	function populateGames() {
-		const getGamesIds = props.games.map((x) => ({
+
+	async function populateGames() {
+		const response = await fetch(`${baseUrl}/GetWishlist`);
+		const data = await response.json();
+		const getGamesIds = data.map((x) => ({
 			gameTitle: x.gameTitle,
 			gameId: x.gameId
 		}));
@@ -72,10 +81,10 @@ function adminWindow(props) {
 		setGames(getGamesIds);
 	}
 
-	function populateVotingSessions() {
-		console.log('populating votingSessions...');
-		console.log(props.votingSessions);
-		setVotingSessions(props.votingSessions);
+	async function populateVotingSessions() {
+		const fetchedVotingSessions = await FetchAllVotingSessions(baseUrl);
+		console.log(fetchedVotingSessions);
+		setVotingSessions(fetchedVotingSessions);
 	}
 
 	return (
@@ -113,7 +122,9 @@ function adminWindow(props) {
 						/>
 
 						<NavDropdown title="Voting Session" id="basic-nav-dropdown">
-							<NavDropdown.Item>Create session</NavDropdown.Item>
+							<NavDropdown.Item onClick={() => setShowAddVotingSession(true)}>
+								Create session
+							</NavDropdown.Item>
 							<NavDropdown.Divider />
 							<NavDropdown.Item>Delete session</NavDropdown.Item>
 							<NavDropdown.Divider />
@@ -193,6 +204,18 @@ function adminWindow(props) {
 				message={successMessage}
 			/>
 
+			<AddVotingSession
+				baseUrl={baseUrl}
+				show={showAddVotingSession}
+				setShow={(x) => setShowAddVotingSession(x)}
+				setCurrentVotingSession={(x) => {
+					setCurrentVotingSession(x);
+					resetAllViews();
+					setRefreshVotingSession(true);
+					setShowVotingSession(true);
+				}}
+			/>
+
 			{showVotingSession ? (
 				<GetVotingSession
 					baseUrl={baseUrl}
@@ -218,20 +241,5 @@ function adminWindow(props) {
 		</div>
 	);
 }
-
-adminWindow.getInitialProps = async function() {
-	const response = await fetch(`${baseUrl}/GetWishlist`);
-	const data = await response.json();
-	const response2 = await fetch(`${baseUrl}/GetAllMembers`);
-	const data2 = await response2.json();
-
-	const fetchedVotingSessions = await FetchAllVotingSessions(baseUrl);
-
-	return {
-		games: data.map((entry) => entry),
-		members: data2.map((entry) => entry.initials),
-		votingSessions: fetchedVotingSessions
-	};
-};
 
 export default adminWindow;
