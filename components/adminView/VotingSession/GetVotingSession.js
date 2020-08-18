@@ -112,6 +112,8 @@ function GetVotingSession(props) {
 				columns={columns}
 				bordered={false}
 				rowStyle={{ textAlign: 'center' }}
+				hover
+				noDataIndication="Table is Empty"
 			/>
 
 			<AddVotingSessionEntry

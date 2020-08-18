@@ -46,6 +46,7 @@ function GetAllMembers(props) {
 				columns={columns}
 				bordered={false}
 				rowStyle={{ textAlign: 'center' }}
+				hover
 			/>
 		</div>
 	);
