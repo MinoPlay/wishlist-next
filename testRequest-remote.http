@@ -38,4 +38,4 @@ GET http://bgg-api-test.azurewebsites.net/api/AddVotingSession?sessionId=5
 ###
 GET http://bgg-api-test.azurewebsites.net/api/GetVotingSessionEntries?votingSessionId=1713242007
 ###
-GET http://bgg-api-test.azurewebsites.net/api/GetVotingSession?sessionId=1713242007
+GET http://bgg-api-test.azurewebsites.net/api/GetVotingSession?sessionId=10

@@ -11,6 +11,7 @@ import MembersTabResult from '../components/adminView/TabsResults/MembersTabResu
 import WishlistTab from '../components/adminView/Tabs/WishlistTab';
 import WishlistTabResult from '../components/adminView/TabsResults/WishlistTabResult';
 import AddVotingSession from '../components/adminView/VotingSession/AddVotingSession';
+import DeleteVotingSession from '../components/adminView/VotingSession/DeleteVotingSession';
 
 const devMode = false;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api-test.azurewebsites.net/api';
@@ -51,8 +52,10 @@ function adminWindow(props) {
 	const [ showAddVotingSession, setShowAddVotingSession ] = useState(false);
 
 	const [ votingSessions, setVotingSessions ] = useState([]);
-	const [ showVotingSessions, setShowVotingSessions ] = useState(false);
+	const [ showSelectVotingSession, setShowSelectVotingSession ] = useState(false);
 	const [ currentVotingSession, setCurrentVotingSession ] = useState('');
+
+	const [ showDeleteVotingSession, setShowDeleteVotingSession ] = useState(false);
 
 	const [ showVotingSession, setShowVotingSession ] = useState(false);
 	const [ refreshVotingSession, setRefreshVotingSession ] = useState(true);
@@ -126,13 +129,21 @@ function adminWindow(props) {
 								Create session
 							</NavDropdown.Item>
 							<NavDropdown.Divider />
-							<NavDropdown.Item>Delete session</NavDropdown.Item>
+							<NavDropdown.Item
+								onClick={() => {
+									setShowDeleteVotingSession(true);
+									populateVotingSessions();
+									resetAllViews();
+								}}
+							>
+								Delete session
+							</NavDropdown.Item>
 							<NavDropdown.Divider />
-							<NavDropdown.Item>Voting sessions</NavDropdown.Item>
+							<NavDropdown.Item disabled>Voting sessions</NavDropdown.Item>
 							<NavDropdown.Divider />
 							<NavDropdown.Item
 								onClick={() => {
-									setShowVotingSessions(true);
+									setShowSelectVotingSession(true);
 									populateGames();
 									populateVotingSessions();
 								}}
@@ -229,14 +240,21 @@ function adminWindow(props) {
 			<SelectVotingSession
 				baseUrl={baseUrl}
 				votingSessions={votingSessions}
-				show={showVotingSessions}
-				setShow={(x) => setShowVotingSessions(x)}
+				show={showSelectVotingSession}
+				setShow={(x) => setShowSelectVotingSession(x)}
 				setCurrentVotingSession={(x) => {
 					setCurrentVotingSession(x);
 					resetAllViews();
 					setRefreshVotingSession(true);
 					setShowVotingSession(true);
 				}}
+			/>
+
+			<DeleteVotingSession
+				baseUrl={baseUrl}
+				votingSessions={votingSessions}
+				show={showDeleteVotingSession}
+				setShow={(x) => setShowDeleteVotingSession(x)}
 			/>
 		</div>
 	);
