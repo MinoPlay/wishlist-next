@@ -3,15 +3,17 @@ import React from 'react';
 import { useState } from 'react';
 
 async function FetchAllAvailableGamesStates(baseUrl) {
-	var buildUrl = `${baseUrl}/GetAvailableGameStates`;
-	const result = await fetch(buildUrl);
+	var baseUrl = `${baseUrl}/GetAvailableGameStates`;
+	const result = await fetch(baseUrl);
 	const data = await result.json();
 	return data.map((x) => x.availableState);
 }
 
 async function UpdateState(baseUrl, gameId, newState) {
-	var buildUrl = `${baseUrl}/SetGameState?gameId=${gameId}&gameState=${newState}`;
-	const response = await fetch(buildUrl);
+	console.log('inside UpdateState');
+	var baseUrl = `${baseUrl}/SetGameState?gameId=${gameId}&gameState=${newState}`;
+	console.log(`updating state with: ${baseUrl}`);
+	const response = await fetch(baseUrl);
 	return response;
 }
 
@@ -37,8 +39,10 @@ function GameStatesDropdown(props) {
 					<Dropdown.Item
 						key={x}
 						eventKey={x}
-						onSelect={() => setSelection(x)}
-						onSelect={() => UpdateState(props.buildUrl, props.gameId, x)}
+						onSelect={() => {
+							setSelection(x);
+							UpdateState(props.baseUrl, props.gameId, x);
+						}}
 					>
 						<Dropdown.Divider />
 						{x}

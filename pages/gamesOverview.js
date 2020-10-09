@@ -79,7 +79,7 @@ function gamesOverview() {
 			Id: x.gameId,
 			Title: x.gameTitle,
 
-			State: <GameStatesDropdown baseUrl={baseUrl} defaultSelection={GetGameState(x.gameId)} />
+			State: <GameStatesDropdown baseUrl={baseUrl} gameId={x.gameId} defaultSelection={GetGameState(x.gameId)} />
 		}));
 
 		setData(tempData);
