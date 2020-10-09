@@ -37,7 +37,7 @@ function AddVotingSessionEntry(props) {
 				props.success(true);
 				props.successMessage(`Successfully added game to the voting session '${gameId}'`);
 				props.setShow(false);
-				props.setRefresh(true);
+				props.setRefresh();
 			} else {
 				alert(`${gameId} already exists in voting session.`);
 			}

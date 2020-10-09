@@ -123,7 +123,7 @@ function GetVotingSession(props) {
 				success={(x) => setShowSuccess(x)}
 				successMessage={(x) => setSuccessMessage(x)}
 				setShow={(x) => setShowAddVotingSessionEntry(x)}
-				setRefresh={(x) => props.setRefresh(x)}
+				setRefresh={() => props.setRefresh(true)}
 				show={showAddVotingSessionEntry}
 			/>
 			<SuccessSubmit
