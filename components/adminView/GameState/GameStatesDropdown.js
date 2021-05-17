@@ -11,7 +11,7 @@ async function FetchAllAvailableGamesStates(baseUrl) {
 
 async function UpdateState(baseUrl, gameId, newState) {
 	console.log('inside UpdateState');
-	var baseUrl = `${baseUrl}/SetGameState?gameId=${gameId}&gameState=${newState}`;
+	var baseUrl = `${baseUrl}/UpdateGame?gameId=${gameId}&gameState=${newState}`;
 	console.log(`updating state with: ${baseUrl}`);
 	const response = await fetch(baseUrl);
 	return response;

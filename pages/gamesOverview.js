@@ -4,12 +4,6 @@ import fetch from 'isomorphic-unfetch';
 import BootstrapTable from 'react-bootstrap-table-next';
 import GameStatesDropdown from '../components/adminView/GameState/GameStatesDropdown';
 
-async function FetchAllGamesStates(baseUrl) {
-	var buildUrl = `${baseUrl}/GetAllGamesStates`;
-	const result = await fetch(buildUrl);
-	const data = await result.json();
-	return data;
-}
 async function FetchAllGames(baseUrl) {
 	var buildUrl = `${baseUrl}/GetAllGames`;
 	const result = await fetch(buildUrl);
@@ -40,10 +34,8 @@ const columns = [
 
 function gamesOverview() {
 	const [ allGames, setAllGames ] = useState([]);
-	const [ allGamesStates, setAllGamesStates ] = useState([]);
 	const [ data, setData ] = useState([]);
 	const [ refreshGames, setRefreshGames ] = useState(true);
-	const [ refreshGamesStates, setRefreshGamesStates ] = useState(true);
 	const [ refresh, setRefresh ] = useState(true);
 	const baseUrl = 'http://localhost:7071/api';
 
@@ -51,35 +43,20 @@ function gamesOverview() {
 		FetchAllGames(baseUrl).then((response) => {
 			const tempGames = response.map((x) => ({
 				gameId: x.gameId,
-				gameTitle: x.gameTitle
+				gameTitle: x.gameTitle,
+				gameState: x.gameState
 			}));
 			setAllGames(tempGames);
 			setRefreshGames(false);
 		});
 	}
 
-	if (refreshGamesStates) {
-		FetchAllGamesStates(baseUrl).then((response) => {
-			const tempGamesStates = response.map((x) => ({
-				gameId: x.gameId,
-				gameState: x.gameState
-			}));
-			setAllGamesStates(tempGamesStates);
-			setRefreshGamesStates(false);
-		});
-	}
-
-	function GetGameState(gameId) {
-		var result = allGamesStates.find((x) => x.gameId === gameId).gameState;
-		return result;
-	}
-
-	if (!refreshGames && !refreshGamesStates && refresh) {
+	if (!refreshGames && refresh) {
 		const tempData = allGames.map((x) => ({
 			Id: x.gameId,
 			Title: x.gameTitle,
 
-			State: <GameStatesDropdown baseUrl={baseUrl} gameId={x.gameId} defaultSelection={GetGameState(x.gameId)} />
+			State: <GameStatesDropdown baseUrl={baseUrl} gameId={x.gameId} defaultSelection={x.gameState} />
 		}));
 
 		setData(tempData);
