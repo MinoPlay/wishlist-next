@@ -13,7 +13,7 @@ import WishlistTabResult from '../components/adminView/TabsResults/WishlistTabRe
 import AddVotingSession from '../components/adminView/VotingSession/AddVotingSession';
 import DeleteVotingSession from '../components/adminView/VotingSession/DeleteVotingSession';
 
-const devMode = false;
+const devMode = true;
 const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 async function FetchAllVotingSessions(baseUrl) {

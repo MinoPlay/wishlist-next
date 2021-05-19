@@ -45,7 +45,8 @@ function gamesOverview() {
 	const [ refreshGames, setRefreshGames ] = useState(true);
 	const [ refreshGamesStates, setRefreshGamesStates ] = useState(true);
 	const [ refresh, setRefresh ] = useState(true);
-	const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+	const devMode = true;
+	const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 	if (refreshGames) {
 		FetchAllGames(baseUrl).then((response) => {
