@@ -49,15 +49,10 @@ function Header(props) {
 	return (
 		<div>
 			<Navbar bg="dark" variant="dark" expand="lg">
-				<Navbar.Brand href="#home">
-					Oticon Board Games Club <i>(BETA version)</i>
-				</Navbar.Brand>
+				<Navbar.Brand href="#home">Oticon Board Games Club</Navbar.Brand>
 				<Nav className="mr-auto">
 					<Button variant="outline-success" onClick={() => onResubmitDialog()}>
 						Submit
-					</Button>
-					<Button variant="outline-success" href="/adminWindow.html" disabled>
-						Admin view
 					</Button>
 				</Nav>
 				<Navbar.Text>{props.loginId !== '' ? 'Logged in as: ' + props.loginId : ''}</Navbar.Text>

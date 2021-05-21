@@ -7,8 +7,9 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const devMode = true;
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const devMode = false;
+const baseUrl = 'https://bgg-api-test.azurewebsites.net/api';
+//const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 const columns = [
 	{
@@ -243,7 +244,8 @@ async function GetGameData(gameId) {
 	return data;
 }
 
-index.getInitialProps = async function() {
+async function Initialize() {
+	console.log('initializing...');
 	const gameIds = await GetGameIdsFromVotingSession();
 
 	var promises = gameIds.map(async function(gameId) {
@@ -257,4 +259,8 @@ index.getInitialProps = async function() {
 		};
 	});
 	return result;
+}
+
+index.getInitialProps = async function() {
+	return Initialize();
 };
