@@ -60,7 +60,7 @@ function GetWishlistSelections(props) {
 			const wishlist = response.map((x) => x);
 			const tempData = wishlist.map((wishlistEntry) => ({
 				User: wishlistEntry.userId,
-				Id: wishlistEntry.gameSelection,
+				Id: wishlistEntry.GameId,
 				GameTitle: wishlistEntry.gameTitle,
 				Weight: wishlistEntry.gameWeight
 			}));

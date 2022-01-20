@@ -14,7 +14,7 @@ async function submitWishlistSelection(baseUrl, userName, gameSelections, resubm
 	var buildUrl = `${baseUrl}/AddWishlistSelection?UserId=${userName}`;
 
 	for (var i = 0; i < gameSelections.length; i++) {
-		var combinedUrl = `${buildUrl}&GameSelection=${gameSelections[i].gameId}&GameWeight=${gameSelections[i]
+		var combinedUrl = `${buildUrl}&GameId=${gameSelections[i].gameId}&GameWeight=${gameSelections[i]
 			.weight}`;
 		console.log(combinedUrl);
 		const response = fetch(combinedUrl);
