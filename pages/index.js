@@ -7,14 +7,15 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const devMode = false;
-const baseUrl = 'https://bgg-api-test.azurewebsites.net/api';
-//const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const devMode = true;
+// const baseUrl = 'https://bgg-api-test.azurewebsites.net/api';
+const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 const columns = [
 	{
 		dataField: 'Select',
 		text: 'Select',
+		sort: true,
 		headerAlign: 'center'
 	},
 	{
@@ -141,9 +142,9 @@ export default function index(props) {
 				<div dangerouslySetInnerHTML={{ __html: x.description }} />
 			</ReactTextCollapse>
 		),
-		Players: `${x.minplayers}-${x.maxplayers}`,
-		Playtime: `${x.minplaytime}-${x.maxplaytime}`,
-		MinAge: parseInt(x.minage),
+		Players: `${x.minPlayers}-${x.maxPlayers}`,
+		Playtime: `${x.minPlaytime}-${x.maxPlaytime}`,
+		MinAge: parseInt(x.minAge),
 		AvgWeight: Math.round(x.averageWeight * 100) / 100,
 		LanguageRequirement: x.languageDependence,
 		Ranking: x.ranking

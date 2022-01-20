@@ -17,7 +17,7 @@ GET http://localhost:7071/api/SyncWishlistAgainstBGG
 ###
 GET http://localhost:7071/api/AddGame
 ###
-GET http://localhost:7071/api/GetGame?gameId=421
+GET http://localhost:7071/api/GetGame?gameId=112686
 ###
 GET http://localhost:7071/api/DeleteGame
 ###
@@ -32,7 +32,7 @@ GET http://localhost:7071/api/GetVotingSessionEntries?votingSessionId=1801820636
 ###
 GET http://localhost:7071/api/UpdateVotingSessionEntry?votingSessionId=1801820636
 ###
-GET http://localhost:7071/api/ActivateVotingSession?sessionId=10
+GET http://localhost:7071/api/ActivateVotingSession?sessionId=VotingSession_1
 ###
 GET http://localhost:7071/api/GetAllVotingSessions
 ###

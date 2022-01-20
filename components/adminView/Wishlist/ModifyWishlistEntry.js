@@ -64,11 +64,11 @@ function ModifyWishlistEntry(props) {
 			setGameTitle(wishlistSelection['gameTitle']);
 			setThumbnail(<img src={wishlistSelection['thumbnail']} />);
 			setDescription(wishlistSelection['description']);
-			setMinPlayers(wishlistSelection['minplayers']);
-			setMaxPlayers(wishlistSelection['maxplayers']);
-			setMinPlaytime(wishlistSelection['minplaytime']);
-			setMaxPlaytime(wishlistSelection['maxplaytime']);
-			setMinage(wishlistSelection['minage']);
+			setMinPlayers(wishlistSelection['minPlayers']);
+			setMaxPlayers(wishlistSelection['maxPlayers']);
+			setMinPlaytime(wishlistSelection['minPlaytime']);
+			setMaxPlaytime(wishlistSelection['maxPlaytime']);
+			setMinage(wishlistSelection['minAge']);
 			setLanguageDependence(wishlistSelection['languageDependence']);
 			setAverageWeight(wishlistSelection['averageWeight']);
 			setBaseUrl(props.baseUrl);
