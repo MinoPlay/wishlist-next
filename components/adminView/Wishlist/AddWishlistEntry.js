@@ -23,7 +23,7 @@ function AddWishlistEntry(props) {
 		ValidateGameExists(props.baseUrl, gameId).then((x) => {
 			if (x != 200) {
 				setGameId(gameId);
-				// add new member
+				// add new game
 				fetch(`${props.baseUrl}/AddGame?gameId=${gameId}`);
 				props.success(true);
 				props.successMessage(`Successfully added new game to the wishlist '${gameId}'`);

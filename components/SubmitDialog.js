@@ -17,8 +17,8 @@ async function submitWishlistSelection(baseUrl, userName, gameSelections, resubm
 		var combinedUrl = `${buildUrl}&GameId=${gameSelections[i].gameId}&GameWeight=${gameSelections[i]
 			.weight}`;
 		console.log(combinedUrl);
-		const response = fetch(combinedUrl);
-		console.log(response);
+		fetch(combinedUrl)
+			.then(response => console.log(response));
 	}
 	console.log('done submitWishlistSelection!!!');
 }

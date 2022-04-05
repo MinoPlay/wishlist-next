@@ -38,8 +38,6 @@ GET http://localhost:7071/api/GetAllVotingSessions
 ###
 GET http://localhost:7071/api/GetVotingSession?sessionId=active
 ###
-GET http://localhost:7071/api/GetAllGamesStates
-###
 GET http://localhost:7071/api/GetAllGames
 ###
-GET http://localhost:7071/api/GetAvailableGameStates
+GET http://localhost:7071/api/GetAllAvailableGameStates

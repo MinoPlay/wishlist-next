@@ -7,6 +7,7 @@ import fetch from 'isomorphic-unfetch';
 
 async function ValidateLoginId(baseUrl, loginId) {
 	var buildUrl = `${baseUrl}/GetMember?initials=${loginId}`;
+	console.log(buildUrl);
 	const result = await fetch(buildUrl);
 	console.log(result);
 	const status = result.status;

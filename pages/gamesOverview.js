@@ -5,7 +5,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import GameStatesDropdown from '../components/adminView/GameState/GameStatesDropdown';
 
 async function FetchAllGamesStates(baseUrl) {
-	var buildUrl = `${baseUrl}/GetAllGamesStates`;
+	var buildUrl = `${baseUrl}/GetAllGames`;
 	const result = await fetch(buildUrl);
 	const data = await result.json();
 	return data;

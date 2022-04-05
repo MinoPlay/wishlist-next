@@ -6,7 +6,13 @@ import BootstrapTable from 'react-bootstrap-table-next';
 async function FetchAllMembers(baseUrl) {
 	// var buildUrl = `https://bgg-api.azurewebsites.net/api/GetAllMembers`;
 	var buildUrl = `${baseUrl}/GetAllMembers`;
-	const result = await fetch(buildUrl);
+	const result = await fetch(buildUrl, {
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+  			"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  			"Access-Control-Allow-Methods": "GET"
+		}
+	});
 	const data = await result.json();
 	return data;
 }

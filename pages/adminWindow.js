@@ -19,7 +19,13 @@ const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewe
 
 async function FetchAllVotingSessions(baseUrl) {
 	var buildUrl = `${baseUrl}/GetAllVotingSessions`;
-	const result = await fetch(buildUrl);
+	const result = await fetch(buildUrl, {
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+  			"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  			"Access-Control-Allow-Methods": "GET"
+		}
+	});
 	const data = await result.json();
 	return data.map((x) => x.sessionId);
 }
@@ -69,13 +75,25 @@ function adminWindow(props) {
 	}
 
 	async function populateMembers() {
-		const response2 = await fetch(`${baseUrl}/GetAllMembers`);
+		const response2 = await fetch(`${baseUrl}/GetAllMembers`, {
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				  "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+				  "Access-Control-Allow-Methods": "GET"
+			}
+		});
 		const data2 = await response2.json();
 		setMembers(data2.map((entry) => entry.initials));
 	}
 
 	async function populateGames() {
-		const response = await fetch(`${baseUrl}/GetWishlist`);
+		const response = await fetch(`${baseUrl}/GetWishlist`, {
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				  "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+				  "Access-Control-Allow-Methods": "GET"
+			}
+		});
 		const data = await response.json();
 		const getGamesIds = data.map((x) => ({
 			gameTitle: x.gameTitle,
@@ -86,7 +104,13 @@ function adminWindow(props) {
 	}
 
 	async function populateVotingSessions() {
-		const fetchedVotingSessions = await FetchAllVotingSessions(baseUrl);
+		const fetchedVotingSessions = await FetchAllVotingSessions(baseUrl, {
+			headers: {
+				"Access-Control-Allow-Origin": "*",
+				  "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+				  "Access-Control-Allow-Methods": "GET"
+			}
+		});
 		console.log(fetchedVotingSessions);
 		setVotingSessions(fetchedVotingSessions);
 	}

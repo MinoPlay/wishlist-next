@@ -7,15 +7,15 @@ import LoginDialog from '../components/LoginDialog';
 import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
-const devMode = true;
-// const baseUrl = 'https://bgg-api-test.azurewebsites.net/api';
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const devMode = false;
+const baseUrl = 'http://localhost:7071/api';
+// const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 const columns = [
 	{
 		dataField: 'Select',
 		text: 'Select',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
@@ -27,7 +27,7 @@ const columns = [
 	{
 		dataField: 'Title',
 		text: 'Title',
-		sort: true,
+		sort: false,
 		headerStyle: () => {
 			return { width: '10%' };
 		},
@@ -41,37 +41,37 @@ const columns = [
 	{
 		dataField: 'Players',
 		text: 'Players',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
 		dataField: 'Playtime',
 		text: 'Playtime',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
 		dataField: 'MinAge',
 		text: 'MinAge',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
 		dataField: 'AvgWeight',
 		text: 'Avg. Weight',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
 		dataField: 'LanguageRequirement',
 		text: 'Language requirement',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	},
 	{
 		dataField: 'Ranking',
 		text: 'Ranking',
-		sort: true,
+		sort: false,
 		headerAlign: 'center'
 	}
 ];
@@ -182,7 +182,7 @@ export default function index(props) {
 			.then((response) =>
 				response.map((responseSelection) => {
 					gameSelections.push({
-						gameId: responseSelection.gameSelection,
+						gameId: responseSelection.gameId,
 						gameTitle: responseSelection.gameTitle,
 						weight: responseSelection.gameWeight
 					});

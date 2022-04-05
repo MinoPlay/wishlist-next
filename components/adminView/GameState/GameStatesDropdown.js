@@ -3,15 +3,15 @@ import React from 'react';
 import { useState } from 'react';
 
 async function FetchAllAvailableGamesStates(baseUrl) {
-	var baseUrl = `${baseUrl}/GetAvailableGameStates`;
+	var baseUrl = `${baseUrl}/GetAllAvailableGameStates`;
 	const result = await fetch(baseUrl);
 	const data = await result.json();
-	return data.map((x) => x.availableState);
+	return data.map((x) => x.state);
 }
 
 async function UpdateState(baseUrl, gameId, newState) {
 	console.log('inside UpdateState');
-	var baseUrl = `${baseUrl}/SetGameState?gameId=${gameId}&gameState=${newState}`;
+	var baseUrl = `${baseUrl}/UpdateGameState?gameId=${gameId}&newState=${newState}`;
 	console.log(`updating state with: ${baseUrl}`);
 	const response = await fetch(baseUrl);
 	return response;
