@@ -13,9 +13,10 @@ import WishlistTabResult from '../components/adminView/TabsResults/WishlistTabRe
 import AddVotingSession from '../components/adminView/VotingSession/AddVotingSession';
 import DeleteVotingSession from '../components/adminView/VotingSession/DeleteVotingSession';
 
-const devMode = true;
-// const baseUrl = 'https://bgg-api-test.azurewebsites.net/api';
-const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
+const devMode = false;
+// const baseUrl = 'https://bggapi2022april.azurewebsites.net/api';
+const baseUrl = 'https://bgg-api.azurewebsites.net/api';
+// const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 async function FetchAllVotingSessions(baseUrl) {
 	var buildUrl = `${baseUrl}/GetAllVotingSessions`;

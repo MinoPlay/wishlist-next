@@ -8,7 +8,8 @@ import WeightDropdown from '../components/WeightDropdown';
 import BootstrapTable from 'react-bootstrap-table-next';
 
 const devMode = false;
-const baseUrl = 'http://localhost:7071/api';
+// const baseUrl = 'https://bggapi2022april.azurewebsites.net/api';
+const baseUrl = 'https://bgg-api.azurewebsites.net/api';
 // const baseUrl = devMode ? 'http://localhost:7071/api' : 'https://bgg-api.azurewebsites.net/api';
 
 const columns = [
@@ -99,9 +100,9 @@ async function FetchWishlistSelectionExists(baseUrl, memberId) {
 
 export default function index(props) {
 	const [ gameSelections, setGameSelections ] = useState([]);
-	const [ showLoginDialog, setShowLoginDialog ] = useState(devMode ? false : true);
+	const [ showLoginDialog, setShowLoginDialog ] = useState(true);
 	const [ loginId, setLoginId ] = useState('unknown');
-	const [ enabled, enable ] = useState(devMode ? true : false);
+	const [ enabled, enable ] = useState(false);
 
 	//control the available selection for weight dropdowns
 	const [ availableDropdowns, setAvailableDropdowns ] = useState([ '6', '5', '4', '3', '2', '1', '0' ]);
@@ -212,6 +213,7 @@ export default function index(props) {
 				setShow={() => setShowLoginDialog(false)}
 				setLoginId={(x) => {
 					setLoginId(x);
+					Initialize();
 					PrePopulateSelections(x);
 				}}
 			/>
